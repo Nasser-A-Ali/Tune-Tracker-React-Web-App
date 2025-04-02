@@ -37,6 +37,7 @@ function Artists() {
             <p>Debut Year: {artist.debutYear}</p>
             <p>Genre: {artist.genre}</p>
             <p>Country: {artist.country}</p>
+            <p>Test</p>
           </li>
         ))}
       </ul>
