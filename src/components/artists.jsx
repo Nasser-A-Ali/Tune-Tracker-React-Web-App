@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import "../App.css";
 
 function Artists() {
   const [artists, setArtists] = useState([]);
@@ -76,13 +77,23 @@ function Artists() {
         />
       </form>
 
-      <ul>
+      <ul className="list">
         {artists.filter(filterArtists).map((artist) => (
-          <li key={artist.id}>
-            <h2>{artist.name}</h2>
-            <p>Debut Year: {artist.debutYear}</p>
-            <p>Genre: {artist.genre}</p>
-            <p>Country: {artist.country}</p>
+          <li key={artist.id} className="item">
+            <div className="details">
+              <h2 className="name">{artist.name}</h2>
+              <div className="info">
+                <p>
+                  <strong>Debut Year:</strong> {artist.debutYear}
+                </p>
+                <p>
+                  <strong>Genre:</strong> {artist.genre}
+                </p>
+                <p>
+                  <strong>Country:</strong> {artist.country}
+                </p>
+              </div>
+            </div>
           </li>
         ))}
       </ul>
