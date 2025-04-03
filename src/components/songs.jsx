@@ -7,6 +7,14 @@ function Songs() {
   const [error, setError] = useState(null);
   const [input, setInput] = useState("");
   const [filterOption, setFilterOption] = useState("");
+
+  const [newSong, setNewSong] = useState({
+    title: "",
+    genre: "",
+    duration: "",
+    releaseYear: "",
+    artistId: ""
+  });
   
 
   useEffect(() => {
@@ -22,10 +30,38 @@ function Songs() {
       });
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
+  
+    try {
+      const response = await axios.post("http://localhost:8080/song", {
+        title: newSong.title,
+        genre: newSong.genre,
+        duration: parseInt(newSong.duration),
+        releaseYear: parseInt(newSong.releaseYear),
+        artist: {
+          id: parseInt(newSong.artistId),
+        },
+      });
+  
+   
+      setSongs((prevSongs) => [...prevSongs, response.data]);
+  
+ 
+      setNewSong({
+        title: "",
+        genre: "",
+        duration: "",
+        releaseYear: "",
+        artistId: "",
+      });
+  
+    } catch (error) {
+      console.error("Error adding song:", error);
+      setError("Failed to add song. Please check artist ID.");
+    }
   };
+  
 
   const handleFilterChange = (e) => {
     setFilterOption(e.target.value);
@@ -73,6 +109,7 @@ function Songs() {
         />
       </form>
       <ul className="list">
+       
   {songs.filter(filterSongs).map((song) => (
     <li key={song.id} className="item">
       <div className="details">
@@ -98,6 +135,17 @@ function Songs() {
     </li>
   ))}
 </ul>
+
+<h2>Add New Song</h2>
+<form onSubmit={handleSubmit} className="addForm">
+  <input type="text" placeholder="Title" value={newSong.title} onChange={(e) => setNewSong({...newSong, title: e.target.value})} required />
+  <input type="text" placeholder="Genre" value={newSong.genre} onChange={(e) => setNewSong({...newSong, genre: e.target.value})} required />
+  <input type="number" placeholder="Duration (seconds)" value={newSong.duration} onChange={(e) => setNewSong({...newSong, duration: e.target.value})} required />
+  <input type="number" placeholder="Release Year" value={newSong.releaseYear} onChange={(e) => setNewSong({...newSong, releaseYear: e.target.value})} required />
+  <input type="number" placeholder="Artist ID" value={newSong.artistId} onChange={(e) => setNewSong({...newSong, artistId: e.target.value})} required />
+
+  <button type="submit">Add Song</button>
+</form>
 
     </div>
   );
