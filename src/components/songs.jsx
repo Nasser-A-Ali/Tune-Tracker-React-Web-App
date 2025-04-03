@@ -72,19 +72,33 @@ function Songs() {
           onChange={(e) => setInput(e.target.value)}
         />
       </form>
+      <ul className="list">
+  {songs.filter(filterSongs).map((song) => (
+    <li key={song.id} className="item">
+      <div className="details">
+        <h2 className="name">{song.title}</h2>
+        <div className="info">
+          <p>
+            <strong>Release Year:</strong> {song.releaseYear}
+          </p>
+          <p>
+            <strong>Genre:</strong> {song.genre}
+          </p>
+          <p>
+            <strong>Duration:</strong> {song.duration} seconds
+          </p>
+          <p>
+            <strong>Artist Name:</strong> {song.artist?.name || "Unknown"}
+          </p>
+          <p>
+            <strong>Artist ID:</strong> {song.artist?.id || "Unknown"}
+          </p>
+        </div>
+      </div>
+    </li>
+  ))}
+</ul>
 
-      <ul>
-        {songs.filter(filterSongs).map((song) => (
-          <li key={song.id}>
-            <h2>{song.title}</h2>
-            <p>Release Year: {song.releaseYear}</p>
-            <p>Genre: {song.genre}</p>
-            <p>Duration (seconds): {song.duration}</p>
-            <p>Artist Name: {song.artist?.name || "Unknown"}</p>
-            <p>Artist ID: {song.artist?.id || "Unknown"}</p>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }
