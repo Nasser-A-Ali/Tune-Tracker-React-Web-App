@@ -9,13 +9,13 @@ function Songs() {
   const [filterOption, setFilterOption] = useState("");
 
   const [newSong, setNewSong] = useState({
+    id: null,
     title: "",
     genre: "",
     duration: "",
     releaseYear: "",
-    artistId: ""
+    artistId: "",
   });
-  
 
   useEffect(() => {
     axios
@@ -34,7 +34,7 @@ function Songs() {
     e.preventDefault();
   
     try {
-      const response = await axios.post("http://localhost:8080/song", {
+      const songData = {
         title: newSong.title,
         genre: newSong.genre,
         duration: parseInt(newSong.duration),
@@ -42,23 +42,29 @@ function Songs() {
         artist: {
           id: parseInt(newSong.artistId),
         },
-      });
+      };
   
-   
-      setSongs((prevSongs) => [...prevSongs, response.data]);
+      if (newSong.id === null) {
+        await axios.post("http://localhost:8080/song", songData);
+      } else {
+        await axios.put(`http://localhost:8080/song/${newSong.id}`, songData);
+      }
+
+      // refresh data after an edit so artist isn't unknown 
+      const refreshed = await axios.get("http://localhost:8080/songs");
+      setSongs(refreshed.data);
   
- 
       setNewSong({
+        id: null,
         title: "",
         genre: "",
         duration: "",
         releaseYear: "",
         artistId: "",
       });
-  
     } catch (error) {
-      console.error("Error adding song:", error);
-      setError("Failed to add song. Please check artist ID.");
+      console.error("Error saving song:", error);
+      setError("Failed to save song. Please check artist ID and try again.");
     }
   };
   
@@ -82,6 +88,18 @@ function Songs() {
       default:
         return true;
     }
+  };
+
+  const handleEdit = (song) => {
+    console.log("Editing song:", song);
+    setNewSong({
+      id: song.id,
+      title: song.title,
+      genre: song.genre,
+      duration: song.duration,
+      releaseYear: song.releaseYear,
+      artistId: song.artist?.id || "",
+    });
   };
 
   if (loading) return <div>Loading...</div>;
@@ -108,45 +126,99 @@ function Songs() {
           onChange={(e) => setInput(e.target.value)}
         />
       </form>
+
       <ul className="list">
-       
-  {songs.filter(filterSongs).map((song) => (
-    <li key={song.id} className="item">
-      <div className="details">
-        <h2 className="name">{song.title}</h2>
-        <div className="info">
-          <p>
-            <strong>Release Year:</strong> {song.releaseYear}
-          </p>
-          <p>
-            <strong>Genre:</strong> {song.genre}
-          </p>
-          <p>
-            <strong>Duration:</strong> {song.duration} seconds
-          </p>
-          <p>
-            <strong>Artist Name:</strong> {song.artist?.name || "Unknown"}
-          </p>
-          <p>
-            <strong>Artist ID:</strong> {song.artist?.id || "Unknown"}
-          </p>
-        </div>
-      </div>
-    </li>
-  ))}
-</ul>
+        {songs.filter(filterSongs).map((song) => (
+          <li key={song.id} className="item">
+            <div className="details">
+              <h2 className="name">{song.title}</h2>
+              <div className="info">
+                <p>
+                  <strong>Release Year:</strong> {song.releaseYear}
+                </p>
+                <p>
+                  <strong>Genre:</strong> {song.genre}
+                </p>
+                <p>
+                  <strong>Duration:</strong> {song.duration} seconds
+                </p>
+                <p>
+                  <strong>Artist Name:</strong> {song.artist?.name || "Unknown"}
+                </p>
+                <p>
+                  <strong>Artist ID:</strong> {song.artist?.id || "Unknown"}
+                  <button onClick={() => handleEdit(song)}>Edit</button>
+                </p>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
 
-<h2>Add New Song</h2>
-<form onSubmit={handleSubmit} className="addForm">
-  <input type="text" placeholder="Title" value={newSong.title} onChange={(e) => setNewSong({...newSong, title: e.target.value})} required />
-  <input type="text" placeholder="Genre" value={newSong.genre} onChange={(e) => setNewSong({...newSong, genre: e.target.value})} required />
-  <input type="number" placeholder="Duration (seconds)" value={newSong.duration} onChange={(e) => setNewSong({...newSong, duration: e.target.value})} required />
-  <input type="number" placeholder="Release Year" value={newSong.releaseYear} onChange={(e) => setNewSong({...newSong, releaseYear: e.target.value})} required />
-  <input type="number" placeholder="Artist ID" value={newSong.artistId} onChange={(e) => setNewSong({...newSong, artistId: e.target.value})} required />
+      <h2>{newSong.id === null ? "Add New Song" : "Update Song"}</h2>
+      {newSong.id !== null && (
+  <button
+    onClick={() =>
+      setNewSong({
+        id: null,
+        title: "",
+        genre: "",
+        duration: "",
+        releaseYear: "",
+        artistId: "",
+      })
+    }
+    style={{ marginBottom: "10px" }}
+  >
+    Cancel Edit
+  </button>
+)}
 
-  <button type="submit">Add Song</button>
-</form>
+      <form onSubmit={handleSubmit} className="addForm">
+        <input
+          type="text"
+          placeholder="Title"
+          value={newSong.title}
+          onChange={(e) => setNewSong({ ...newSong, title: e.target.value })}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Genre"
+          value={newSong.genre}
+          onChange={(e) => setNewSong({ ...newSong, genre: e.target.value })}
+          required
+        />
+        <input
+          type="number"
+          placeholder="Duration (seconds)"
+          value={newSong.duration}
+          onChange={(e) => setNewSong({ ...newSong, duration: e.target.value })}
+          required
+        />
+        <input
+          type="number"
+          placeholder="Release Year"
+          value={newSong.releaseYear}
+          onChange={(e) =>
+            setNewSong({ ...newSong, releaseYear: e.target.value })
+          }
+          required
+        />
+        <input
+          type="number"
+          placeholder="Artist ID"
+          value={newSong.artistId}
+          onChange={(e) =>
+            setNewSong({ ...newSong, artistId: e.target.value })
+          }
+          required
+        />
 
+        <button type="submit">
+          {newSong.id === null ? "Add Song" : "Update Song"}
+        </button>
+      </form>
     </div>
   );
 }
