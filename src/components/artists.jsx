@@ -139,6 +139,7 @@ function Artists() {
 
       <form onSubmit={handleSubmit}>
         <input
+          id="InputTop"
           type="text"
           placeholder="Enter query"
           value={input}
@@ -160,8 +161,11 @@ function Artists() {
                 </p>
                 <p>
                   <strong>Country:</strong> {artist.country}
-                  <button onClick={() => handleEdit(artist)}>Edit</button>
+                  <button id="EditButton" onClick={() => handleEdit(artist)}>
+                    Edit
+                  </button>
                   <button
+                    id="DeleteButton"
                     onClick={() => handleDelete(artist.id)}
                     style={{ marginLeft: "10px" }}
                   >
