@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import "../App.css";
 
 function Songs() {
   const [songs, setSongs] = useState([]);
@@ -32,7 +33,7 @@ function Songs() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       const songData = {
         title: newSong.title,
@@ -43,17 +44,16 @@ function Songs() {
           id: parseInt(newSong.artistId),
         },
       };
-  
+
       if (newSong.id === null) {
         await axios.post("http://localhost:8080/song", songData);
       } else {
         await axios.put(`http://localhost:8080/song/${newSong.id}`, songData);
       }
 
-      // refresh data after an edit so artist isn't unknown 
       const refreshed = await axios.get("http://localhost:8080/songs");
       setSongs(refreshed.data);
-  
+
       setNewSong({
         id: null,
         title: "",
@@ -67,7 +67,6 @@ function Songs() {
       setError("Failed to save song. Please check artist ID and try again.");
     }
   };
-  
 
   const handleFilterChange = (e) => {
     setFilterOption(e.target.value);
@@ -102,9 +101,6 @@ function Songs() {
     });
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
-
   const handleDelete = async (songId) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this song?");
     if (confirmDelete) {
@@ -113,11 +109,14 @@ function Songs() {
         const refreshed = await axios.get("http://localhost:8080/songs");
         setSongs(refreshed.data);
       } catch (error) {
-          console.error("Error deleting song:", error);
-          setError("Failed to delete song. Please try again.")
+        console.error("Error deleting song:", error);
+        setError("Failed to delete song. Please try again.");
       }
     }
   };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div>
@@ -134,6 +133,7 @@ function Songs() {
 
       <form onSubmit={handleSubmit}>
         <input
+          id="InputTop"
           type="text"
           placeholder="Enter query"
           value={input}
@@ -161,11 +161,14 @@ function Songs() {
                 </p>
                 <p>
                   <strong>Artist ID:</strong> {song.artist?.id || "Unknown"}
-                  <button onClick={() => handleEdit(song)}>Edit</button>
-                  <button onClick={() => handleDelete(song.id)} style={{ marginLeft: "10px" }}>
-  Delete
-</button>
-
+                  <button id="EditButton" onClick={() => handleEdit(song)}>Edit</button>
+                  <button
+                    id="DeleteButton"
+                    onClick={() => handleDelete(song.id)}
+                    style={{ marginLeft: "10px" }}
+                  >
+                    Delete
+                  </button>
                 </p>
               </div>
             </div>
@@ -175,22 +178,22 @@ function Songs() {
 
       <h2>{newSong.id === null ? "Add New Song" : "Update Song"}</h2>
       {newSong.id !== null && (
-  <button
-    onClick={() =>
-      setNewSong({
-        id: null,
-        title: "",
-        genre: "",
-        duration: "",
-        releaseYear: "",
-        artistId: "",
-      })
-    }
-    style={{ marginBottom: "10px" }}
-  >
-    Cancel Edit
-  </button>
-)}
+        <button
+          onClick={() =>
+            setNewSong({
+              id: null,
+              title: "",
+              genre: "",
+              duration: "",
+              releaseYear: "",
+              artistId: "",
+            })
+          }
+          style={{ marginBottom: "10px" }}
+        >
+          Cancel Edit
+        </button>
+      )}
 
       <form onSubmit={handleSubmit} className="addForm">
         <input
