@@ -1,3 +1,31 @@
+body {
+  background-color: burlywood;
+}
+
+Input {
+  border-radius: 10px;
+  margin: 10px;
+  padding: 10px;
+}
+
+Select {
+  border-radius: 10px;
+  padding: 10px;
+  width: 350px;
+  margin-left: 10px;
+}
+
+button {
+  border-radius: 10px;
+}
+
+button:hover {
+  cursor: pointer;
+  background-color: #555;
+  color: white;
+  border-radius: 10px;
+}
+
 .App {
   text-align: center;
 }
@@ -78,4 +106,34 @@
 
 .info p strong {
   color: #222;
+}
+
+#EditButton {
+  background-color: rgb(0, 190, 0);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+#EditButton:hover {
+  background-color: rgb(0, 80, 0);
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+#DeleteButton {
+  background-color: red;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+#DeleteButton:hover {
+  background-color: rgb(117, 0, 0);
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+#InputTop {
+  width: 450px;
 }
