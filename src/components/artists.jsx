@@ -50,7 +50,6 @@ function Artists() {
         );
       }
 
-      // refresh data after an edit so artist isn't unknown
       const refreshed = await axios.get("http://localhost:8080/artists");
       setArtists(refreshed.data);
 
@@ -99,6 +98,24 @@ function Artists() {
     });
   };
 
+  const handleDelete = async (artistId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this artist?"
+    );
+
+    if (confirmDelete) {
+      try {
+        await axios.delete(`http://localhost:8080/artist/${artistId}`);
+
+        const refreshed = await axios.get("http://localhost:8080/artists");
+        setArtists(refreshed.data);
+      } catch (error) {
+        console.error("Error deleting artist:", error);
+        setError("Failed to delete artist. Please try again.");
+      }
+    }
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -144,6 +161,12 @@ function Artists() {
                 <p>
                   <strong>Country:</strong> {artist.country}
                   <button onClick={() => handleEdit(artist)}>Edit</button>
+                  <button
+                    onClick={() => handleDelete(artist.id)}
+                    style={{ marginLeft: "10px" }}
+                  >
+                    Delete
+                  </button>
                 </p>
               </div>
             </div>
