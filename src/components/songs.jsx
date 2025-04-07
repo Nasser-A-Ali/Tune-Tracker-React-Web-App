@@ -105,6 +105,20 @@ function Songs() {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
+  const handleDelete = async (songId) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this song?");
+    if (confirmDelete) {
+      try {
+        await axios.delete(`http://localhost:8080/song/${songId}`);
+        const refreshed = await axios.get("http://localhost:8080/songs");
+        setSongs(refreshed.data);
+      } catch (error) {
+          console.error("Error deleting song:", error);
+          setError("Failed to delete song. Please try again.")
+      }
+    }
+  };
+
   return (
     <div>
       <h1>Songs</h1>
@@ -148,6 +162,10 @@ function Songs() {
                 <p>
                   <strong>Artist ID:</strong> {song.artist?.id || "Unknown"}
                   <button onClick={() => handleEdit(song)}>Edit</button>
+                  <button onClick={() => handleDelete(song.id)} style={{ marginLeft: "10px" }}>
+  Delete
+</button>
+
                 </p>
               </div>
             </div>
