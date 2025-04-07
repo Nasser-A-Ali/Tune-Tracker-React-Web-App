@@ -32,7 +32,7 @@ function Songs() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
       const songData = {
         title: newSong.title,
@@ -43,24 +43,17 @@ function Songs() {
           id: parseInt(newSong.artistId),
         },
       };
-
-      let response;
-
+  
       if (newSong.id === null) {
-        response = await axios.post("http://localhost:8080/song", songData);
-        setSongs((prevSongs) => [...prevSongs, response.data]);
+        await axios.post("http://localhost:8080/song", songData);
       } else {
-        response = await axios.put(
-          `http://localhost:8080/song/${newSong.id}`,
-          songData
-        );
-        setSongs((prevSongs) =>
-          prevSongs.map((song) =>
-            song.id === newSong.id ? response.data : song
-          )
-        );
+        await axios.put(`http://localhost:8080/song/${newSong.id}`, songData);
       }
 
+      // refresh data after an edit so artist isn't unknown 
+      const refreshed = await axios.get("http://localhost:8080/songs");
+      setSongs(refreshed.data);
+  
       setNewSong({
         id: null,
         title: "",
@@ -74,6 +67,7 @@ function Songs() {
       setError("Failed to save song. Please check artist ID and try again.");
     }
   };
+  
 
   const handleFilterChange = (e) => {
     setFilterOption(e.target.value);
