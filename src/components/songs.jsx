@@ -162,7 +162,24 @@ function Songs() {
       </ul>
 
       <h2>{newSong.id === null ? "Add New Song" : "Update Song"}</h2>
-      
+      {newSong.id !== null && (
+  <button
+    onClick={() =>
+      setNewSong({
+        id: null,
+        title: "",
+        genre: "",
+        duration: "",
+        releaseYear: "",
+        artistId: "",
+      })
+    }
+    style={{ marginBottom: "10px" }}
+  >
+    Cancel Edit
+  </button>
+)}
+
       <form onSubmit={handleSubmit} className="addForm">
         <input
           type="text"
