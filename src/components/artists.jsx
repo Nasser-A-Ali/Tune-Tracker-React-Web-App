@@ -9,6 +9,14 @@ function Artists() {
   const [input, setInput] = useState("");
   const [filterOption, setFilterOption] = useState("");
 
+  const [newArtist, setNewArtist] = useState({
+    id: null,
+    name: "",
+    debutYear: "",
+    genre: "",
+    country: "",
+  });
+
   useEffect(() => {
     axios
       .get("http://localhost:8080/artists")
@@ -24,6 +32,39 @@ function Artists() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    try {
+      const artistData = {
+        name: newArtist.name,
+        debutYear: parseInt(newArtist.debutYear),
+        genre: newArtist.genre,
+        country: newArtist.country,
+      };
+
+      if (newArtist.id === null) {
+        await axios.post("http://localhost:8080/artist", artistData);
+      } else {
+        await axios.put(
+          `http://localhost:8080/artist/${newArtist.id}`,
+          artistData
+        );
+      }
+
+      // refresh data after an edit so artist isn't unknown
+      const refreshed = await axios.get("http://localhost:8080/artists");
+      setArtists(refreshed.data);
+
+      setNewArtist({
+        id: null,
+        name: "",
+        debutYear: "",
+        genre: "",
+        country: "",
+      });
+    } catch (error) {
+      console.error("Error saving artist:", error);
+      setError("Failed to save song. Please check artist ID and try again.");
+    }
   };
 
   const handleFilterChange = (e) => {
@@ -45,6 +86,17 @@ function Artists() {
       default:
         return true;
     }
+  };
+
+  const handleEdit = (artist) => {
+    console.log("Editing artist:", artist);
+    setNewArtist({
+      id: artist.id,
+      name: artist.name,
+      debutYear: artist.debutYear,
+      genre: artist.genre,
+      country: artist.country,
+    });
   };
 
   if (loading) {
@@ -91,12 +143,70 @@ function Artists() {
                 </p>
                 <p>
                   <strong>Country:</strong> {artist.country}
+                  <button onClick={() => handleEdit(artist)}>Edit</button>
                 </p>
               </div>
             </div>
           </li>
         ))}
       </ul>
+      <h2>{newArtist.id === null ? "Add New Artist" : "Update Artist"}</h2>
+      {newArtist.id !== null && (
+        <button
+          onClick={() =>
+            setNewArtist({
+              id: null,
+              name: "",
+              debutYear: "",
+              genre: "",
+              country: "",
+            })
+          }
+          style={{ marginBottom: "10px" }}
+        >
+          Cancel Edit
+        </button>
+      )}
+      <form onSubmit={handleSubmit} className="addForm">
+        <input
+          type="text"
+          placeholder="Artist"
+          value={newArtist.name}
+          onChange={(e) => setNewArtist({ ...newArtist, name: e.target.value })}
+          required
+        />
+        <input
+          type="number"
+          placeholder="Debut Year"
+          value={newArtist.debutYear}
+          onChange={(e) =>
+            setNewArtist({ ...newArtist, debutYear: e.target.value })
+          }
+          required
+        />
+        <input
+          type="text"
+          placeholder="Genre"
+          value={newArtist.genre}
+          onChange={(e) =>
+            setNewArtist({ ...newArtist, genre: e.target.value })
+          }
+          required
+        />
+        <input
+          type="text"
+          placeholder="Country"
+          value={newArtist.country}
+          onChange={(e) =>
+            setNewArtist({ ...newArtist, country: e.target.value })
+          }
+          required
+        />
+
+        <button type="submit">
+          {newArtist.id === null ? "Add Artist" : "Update Artist"}
+        </button>
+      </form>
     </div>
   );
 }
