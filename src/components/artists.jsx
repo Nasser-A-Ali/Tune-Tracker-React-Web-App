@@ -8,6 +8,8 @@ function Artists() {
   const [error, setError] = useState(null);
   const [input, setInput] = useState("");
   const [filterOption, setFilterOption] = useState("");
+  const databaseLink = "http://34.235.166.184:80";
+  // const databaseLink = "http://localhost:8080";
 
   const [newArtist, setNewArtist] = useState({
     id: null,
@@ -19,7 +21,7 @@ function Artists() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/artists")
+      .get(`${databaseLink}/artists`)
       .then((response) => {
         setArtists(response.data);
         setLoading(false);
@@ -42,15 +44,13 @@ function Artists() {
       };
 
       if (newArtist.id === null) {
-        await axios.post("http://localhost:8080/artist", artistData);
+        await axios.post(`${databaseLink}/artist`, artistData);
       } else {
-        await axios.put(
-          `http://localhost:8080/artist/${newArtist.id}`,
-          artistData
-        );
+        await axios.put(`${databaseLink}/artist/${newArtist.id}`, artistData);
       }
 
-      const refreshed = await axios.get("http://localhost:8080/artists");
+      // Fixed: Changed endpoint from /artist to /artists to match the initial fetch
+      const refreshed = await axios.get(`${databaseLink}/artists`);
       setArtists(refreshed.data);
 
       setNewArtist({
@@ -62,7 +62,7 @@ function Artists() {
       });
     } catch (error) {
       console.error("Error saving artist:", error);
-      setError("Failed to save song. Please check artist ID and try again.");
+      setError("Failed to save artist. Please check artist ID and try again.");
     }
   };
 
@@ -105,9 +105,10 @@ function Artists() {
 
     if (confirmDelete) {
       try {
-        await axios.delete(`http://localhost:8080/artist/${artistId}`);
+        await axios.delete(`${databaseLink}/artist/${artistId}`);
 
-        const refreshed = await axios.get("http://localhost:8080/artists");
+        // Using consistent endpoint here too
+        const refreshed = await axios.get(`${databaseLink}/artists`);
         setArtists(refreshed.data);
       } catch (error) {
         console.error("Error deleting artist:", error);
