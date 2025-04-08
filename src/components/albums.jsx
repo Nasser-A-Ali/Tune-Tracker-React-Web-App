@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const albums = () => {
 
     function Albums() {
         const [albums, setAlbums] = useState([]);
@@ -111,7 +110,6 @@ const albums = () => {
                 )}
             </div>
         );
-    }
 }
 
-export default albums;
+export default Albums;
