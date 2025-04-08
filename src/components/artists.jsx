@@ -8,8 +8,8 @@ function Artists() {
   const [error, setError] = useState(null);
   const [input, setInput] = useState("");
   const [filterOption, setFilterOption] = useState("");
-  const databaseLink = "http://34.235.166.184:80";
-  // const databaseLink = "http://localhost:8080";
+  // const databaseLink = "http://34.235.166.184:80";
+  const databaseLink = "http://localhost:8080";
 
   const [newArtist, setNewArtist] = useState({
     id: null,
@@ -161,17 +161,20 @@ function Artists() {
                   <strong>Genre:</strong> {artist.genre}
                 </p>
                 <p>
-                  <strong>Country:</strong> {artist.country}
-                  <button id="EditButton" onClick={() => handleEdit(artist)}>
-                    Edit
-                  </button>
-                  <button
-                    id="DeleteButton"
-                    onClick={() => handleDelete(artist.id)}
-                    style={{ marginLeft: "10px" }}
-                  >
-                    Delete
-                  </button>
+                  <p>
+                    <strong>Country:</strong> {artist.country}
+                  </p>
+                  <div className="button-group">
+                    <button id="EditButton" onClick={() => handleEdit(artist)}>
+                      Edit
+                    </button>
+                    <button
+                      id="DeleteButton"
+                      onClick={() => handleDelete(artist.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </p>
               </div>
             </div>

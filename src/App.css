@@ -15,8 +15,16 @@ Select {
   margin-left: 10px;
 }
 
+input,
+select {
+  display: block;
+  margin: 10px auto;
+}
+
 button {
   border-radius: 10px;
+  display: block;
+  margin: 10px auto;
 }
 
 button:hover {
@@ -121,10 +129,18 @@ button:hover {
   cursor: pointer;
 }
 
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
 #DeleteButton {
   background-color: red;
   border-radius: 10px;
   cursor: pointer;
+  padding: 6px 12px;
 }
 
 #DeleteButton:hover {
@@ -136,4 +152,46 @@ button:hover {
 
 #InputTop {
   width: 450px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #333;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h2 {
+  text-align: center;
+}
+
+#NavBar {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  background-color: #deb887;
+  padding: 10px;
+  margin-bottom: 30px;
+  border-radius: 10px;
+}
+
+#NavBar li {
+  list-style: none;
+}
+
+#NavBar a {
+  text-decoration: none;
+  color: #000;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+#NavBar a:hover {
+  background-color: #a0522d;
+  color: white;
 }
