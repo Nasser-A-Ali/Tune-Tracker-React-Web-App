@@ -8,9 +8,8 @@ function Songs() {
   const [error, setError] = useState(null);
   const [input, setInput] = useState("");
   const [filterOption, setFilterOption] = useState("");
-  const databaseLink = "http://34.235.166.184:80"
-  // const databaseLink = "http://localhost:8080"
-
+  // const databaseLink = "http://34.235.166.184:80"
+  const databaseLink = "http://localhost:8080";
 
   const [newSong, setNewSong] = useState({
     id: null,
@@ -105,7 +104,9 @@ function Songs() {
   };
 
   const handleDelete = async (songId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this song?");
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this song?"
+    );
     if (confirmDelete) {
       try {
         await axios.delete(`${databaseLink}/song/${songId}`);
@@ -164,7 +165,9 @@ function Songs() {
                 </p>
                 <p>
                   <strong>Artist ID:</strong> {song.artist?.id || "Unknown"}
-                  <button id="EditButton" onClick={() => handleEdit(song)}>Edit</button>
+                  <button id="EditButton" onClick={() => handleEdit(song)}>
+                    Edit
+                  </button>
                   <button
                     id="DeleteButton"
                     onClick={() => handleDelete(song.id)}
@@ -233,9 +236,7 @@ function Songs() {
           type="number"
           placeholder="Artist ID"
           value={newSong.artistId}
-          onChange={(e) =>
-            setNewSong({ ...newSong, artistId: e.target.value })
-          }
+          onChange={(e) => setNewSong({ ...newSong, artistId: e.target.value })}
           required
         />
 

@@ -8,7 +8,7 @@ function App() {
   return (
     <div>
       <h1>Tune Tracker</h1>
-      <ul>
+      <ul id="NavBar">
         <li>
           <Link to="/artists">Artists</Link>
         </li>
