@@ -8,6 +8,9 @@ function Songs() {
   const [error, setError] = useState(null);
   const [input, setInput] = useState("");
   const [filterOption, setFilterOption] = useState("");
+  // const databaseLink = "http://34.235.166.184:80"
+  const databaseLink = "http://localhost:8080"
+
 
   const [newSong, setNewSong] = useState({
     id: null,
@@ -20,7 +23,7 @@ function Songs() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/songs")
+      .get(`${databaseLink}/songs`)
       .then((response) => {
         setSongs(response.data);
         setLoading(false);
@@ -46,12 +49,12 @@ function Songs() {
       };
 
       if (newSong.id === null) {
-        await axios.post("http://localhost:8080/song", songData);
+        await axios.post(`${databaseLink}/song`, songData);
       } else {
-        await axios.put(`http://localhost:8080/song/${newSong.id}`, songData);
+        await axios.put(`${databaseLink}/song/${newSong.id}`, songData);
       }
 
-      const refreshed = await axios.get("http://localhost:8080/songs");
+      const refreshed = await axios.get(`${databaseLink}/song`);
       setSongs(refreshed.data);
 
       setNewSong({
@@ -105,8 +108,8 @@ function Songs() {
     const confirmDelete = window.confirm("Are you sure you want to delete this song?");
     if (confirmDelete) {
       try {
-        await axios.delete(`http://localhost:8080/song/${songId}`);
-        const refreshed = await axios.get("http://localhost:8080/songs");
+        await axios.delete(`${databaseLink}/song/${songId}`);
+        const refreshed = await axios.get(`${databaseLink}/song`);
         setSongs(refreshed.data);
       } catch (error) {
         console.error("Error deleting song:", error);
