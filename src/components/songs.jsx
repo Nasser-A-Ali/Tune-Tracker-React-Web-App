@@ -8,8 +8,8 @@ function Songs() {
   const [error, setError] = useState(null);
   const [input, setInput] = useState("");
   const [filterOption, setFilterOption] = useState("");
-  // const databaseLink = "http://34.235.166.184:80"
-  const databaseLink = "http://localhost:8080"
+  const databaseLink = "http://34.235.166.184:80"
+  // const databaseLink = "http://localhost:8080"
 
 
   const [newSong, setNewSong] = useState({
@@ -54,7 +54,7 @@ function Songs() {
         await axios.put(`${databaseLink}/song/${newSong.id}`, songData);
       }
 
-      const refreshed = await axios.get(`${databaseLink}/song`);
+      const refreshed = await axios.get(`${databaseLink}/songs`);
       setSongs(refreshed.data);
 
       setNewSong({
@@ -109,7 +109,7 @@ function Songs() {
     if (confirmDelete) {
       try {
         await axios.delete(`${databaseLink}/song/${songId}`);
-        const refreshed = await axios.get(`${databaseLink}/song`);
+        const refreshed = await axios.get(`${databaseLink}/songs`);
         setSongs(refreshed.data);
       } catch (error) {
         console.error("Error deleting song:", error);
