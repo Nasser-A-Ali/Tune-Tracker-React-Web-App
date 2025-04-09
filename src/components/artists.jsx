@@ -50,7 +50,6 @@ function Artists() {
         await axios.put(`${databaseLink}/artist/${newArtist.id}`, artistData);
       }
 
-      // Fixed: Changed endpoint from /artist to /artists to match the initial fetch
       const refreshed = await axios.get(`${databaseLink}/artists`);
       setArtists(refreshed.data);
 
@@ -125,8 +124,6 @@ function Artists() {
     if (confirmDelete) {
       try {
         await axios.delete(`${databaseLink}/artist/${artistId}`);
-
-        // Using consistent endpoint here too
         const refreshed = await axios.get(`${databaseLink}/artists`);
         setArtists(refreshed.data);
       } catch (error) {
