@@ -12,7 +12,6 @@ function Albums() {
     id: null,
     title: "",
     genre: "",
-    numberOfSongs: "",
     listOfSongs: "",
     releaseYear: "",
     artistId: "",
@@ -45,7 +44,6 @@ function Albums() {
         title: newAlbum.title,
         artist: { id: parseInt(newAlbum.artistId) },
         genre: newAlbum.genre,
-        numberOfSongs: parseInt(newAlbum.numberOfSongs),
         releaseYear: parseInt(newAlbum.releaseYear),
         listOfSongs: parsedListOfSongs,
       };
@@ -63,7 +61,6 @@ function Albums() {
         id: null,
         title: "",
         genre: "",
-        numberOfSongs: "",
         listOfSongs: "",
         releaseYear: "",
         artistId: "",
@@ -90,8 +87,6 @@ function Albums() {
         return album.releaseYear.toString().includes(input);
       case "Genre":
         return album.genre.toLowerCase().includes(input.toLowerCase());
-      case "Number of Songs":
-        return album.numberOfSongs.toString().includes(input);
       default:
         return true;
     }
@@ -106,7 +101,6 @@ function Albums() {
       artistId: album.artist?.id || "",
       releaseYear: album.releaseYear,
       genre: album.genre,
-      numberOfSongs: album.numberOfSongs,
       listOfSongs: songIds,
     });
   };
@@ -164,7 +158,6 @@ function Albums() {
                   artistId: "",
                   releaseYear: "",
                   genre: "",
-                  numberOfSongs: "",
                   listOfSongs: "",
                 })
               }
@@ -187,13 +180,6 @@ function Albums() {
               placeholder="Genre"
               value={newAlbum.genre}
               onChange={(e) => setNewAlbum({ ...newAlbum, genre: e.target.value })}
-              required
-            />
-            <input
-              type="number"
-              placeholder="Number of Songs"
-              value={newAlbum.numberOfSongs}
-              onChange={(e) => setNewAlbum({ ...newAlbum, numberOfSongs: e.target.value })}
               required
             />
             <input
@@ -233,7 +219,6 @@ function Albums() {
                 <p><strong>Artist:</strong> {album.artist?.name}</p>
                 <p><strong>Release Year:</strong> {album.releaseYear}</p>
                 <p><strong>Genre:</strong> {album.genre}</p>
-                <p><strong>Number of Songs:</strong> {album.numberOfSongs}</p>
               </div>
               <div className="button-group">
                 <button id="EditButton" onClick={() => handleEdit(album)}>Edit</button>
