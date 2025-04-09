@@ -7,6 +7,7 @@ function Albums() {
   const [error, setError] = useState(null);
   const [input, setInput] = useState("");
   const [filterOption, setFilterOption] = useState("");
+
   const [newAlbum, setNewAlbum] = useState({
     id: null,
     title: "",
@@ -16,7 +17,7 @@ function Albums() {
     releaseYear: "",
     artistId: "",
   });
-  //   const databaseLink = "http://34.235.166.184:80";
+
   const databaseLink = "http://localhost:8080";
 
   useEffect(() => {
@@ -26,7 +27,7 @@ function Albums() {
         setAlbums(response.data);
         setLoading(false);
       })
-      .catch((err) => {
+      .catch(() => {
         setError("Error fetching albums");
         setLoading(false);
       });
@@ -34,13 +35,19 @@ function Albums() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
+      const parsedListOfSongs = newAlbum.listOfSongs
+        .split(",")
+        .map((id) => ({ id: parseInt(id.trim()) }));
+
       const albumData = {
         title: newAlbum.title,
         artist: { id: parseInt(newAlbum.artistId) },
         genre: newAlbum.genre,
-        duration: parseInt(newAlbum.numberOfSongs),
+        numberOfSongs: parseInt(newAlbum.numberOfSongs),
         releaseYear: parseInt(newAlbum.releaseYear),
+        listOfSongs: parsedListOfSongs,
       };
 
       if (newAlbum.id === null) {
@@ -63,7 +70,7 @@ function Albums() {
       });
     } catch (error) {
       console.error("Error saving album:", error);
-      setError("Failed to save album. Please check artist ID and try again.");
+      setError("Failed to save album. Please check artist ID or song IDs.");
     }
   };
 
@@ -80,23 +87,19 @@ function Albums() {
       case "Artist":
         return album.artist?.name.toLowerCase().includes(input.toLowerCase());
       case "Release Year":
-        return album.releaseYear.toLowerCase().includes(input.toLowerCase());
+        return album.releaseYear.toString().includes(input);
       case "Genre":
         return album.genre.toLowerCase().includes(input.toLowerCase());
       case "Number of Songs":
-        return album.numberOfSongs
-          .toString()
-          .toLowerCase()
-          .includes(input.toLowerCase());
-      case "List of Songs":
-        return album.listOfSongs.toLowerCase().includes(input.toLowerCase());
+        return album.numberOfSongs.toString().includes(input);
       default:
         return true;
     }
   };
 
   const handleEdit = (album) => {
-    console.log("Editing album:", album);
+    const songIds = album.listOfSongs?.map((s) => s.id).join(",") || "";
+
     setNewAlbum({
       id: album.id,
       title: album.title,
@@ -104,14 +107,12 @@ function Albums() {
       releaseYear: album.releaseYear,
       genre: album.genre,
       numberOfSongs: album.numberOfSongs,
-      listOfSongs: album.listOfSongs,
+      listOfSongs: songIds,
     });
   };
 
   const handleDelete = async (albumId) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this album?"
-    );
+    const confirmDelete = window.confirm("Are you sure you want to delete this album?");
     if (confirmDelete) {
       try {
         await axios.delete(`${databaseLink}/album/${albumId}`);
@@ -124,13 +125,8 @@ function Albums() {
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div>
@@ -138,8 +134,7 @@ function Albums() {
 
       <div className="SearchAddEditContainer">
         <div id="Search">
-          <h2>Search by: </h2>
-
+          <h2>Search by:</h2>
           <select value={filterOption} onChange={handleFilterOption}>
             <option value="">Select Filter</option>
             <option value="Title">Title</option>
@@ -147,7 +142,6 @@ function Albums() {
             <option value="Release Year">Release Year</option>
             <option value="Genre">Genre</option>
             <option value="Number of Songs">Number of Songs</option>
-            <option value="List of Songs">List of Songs</option>
           </select>
 
           <form onSubmit={(e) => e.preventDefault()}>
@@ -159,6 +153,7 @@ function Albums() {
               onChange={(e) => setInput(e.target.value)}
             />
           </form>
+
           <h2>{newAlbum.id === null ? "Add New Album" : "Update Album"}</h2>
           {newAlbum.id !== null && (
             <button
@@ -184,57 +179,44 @@ function Albums() {
               type="text"
               placeholder="Title"
               value={newAlbum.title}
-              onChange={(e) =>
-                setNewAlbum({ ...newAlbum, title: e.target.value })
-              }
+              onChange={(e) => setNewAlbum({ ...newAlbum, title: e.target.value })}
               required
             />
             <input
               type="text"
               placeholder="Genre"
               value={newAlbum.genre}
-              onChange={(e) =>
-                setNewAlbum({ ...newAlbum, genre: e.target.value })
-              }
+              onChange={(e) => setNewAlbum({ ...newAlbum, genre: e.target.value })}
               required
             />
             <input
               type="number"
               placeholder="Number of Songs"
               value={newAlbum.numberOfSongs}
-              onChange={(e) =>
-                setNewAlbum({ ...newAlbum, numberOfSongs: e.target.value })
-              }
+              onChange={(e) => setNewAlbum({ ...newAlbum, numberOfSongs: e.target.value })}
               required
             />
             <input
               type="text"
-              placeholder="List of Songs"
+              placeholder="List of Song IDs (comma separated)"
               value={newAlbum.listOfSongs}
-              onChange={(e) =>
-                setNewAlbum({ ...newAlbum, listOfSongs: e.target.value })
-              }
+              onChange={(e) => setNewAlbum({ ...newAlbum, listOfSongs: e.target.value })}
               required
             />
             <input
               type="number"
               placeholder="Release Year"
               value={newAlbum.releaseYear}
-              onChange={(e) =>
-                setNewAlbum({ ...newAlbum, releaseYear: e.target.value })
-              }
+              onChange={(e) => setNewAlbum({ ...newAlbum, releaseYear: e.target.value })}
               required
             />
             <input
               type="number"
               placeholder="Artist ID"
               value={newAlbum.artistId}
-              onChange={(e) =>
-                setNewAlbum({ ...newAlbum, artistId: e.target.value })
-              }
+              onChange={(e) => setNewAlbum({ ...newAlbum, artistId: e.target.value })}
               required
             />
-
             <button type="submit">
               {newAlbum.id === null ? "Add Album" : "Update Album"}
             </button>
@@ -242,43 +224,25 @@ function Albums() {
         </div>
       </div>
 
-      {albums.length === 0 ? (
-        <div>No albums available</div>
-      ) : (
-        <ul className="list">
-          {albums.filter(filterAlbums).map((album) => (
-            <li key={album.id} className="item">
-              <div className="details">
-                <h2 className="name">{album.title}</h2>
-                <div className="info">
-                  <p>
-                    <strong>Artist: {album.artist?.name}</strong>
-                  </p>
-                  <p>
-                    <strong>Release Year: {album.releaseYear}</strong>
-                  </p>
-                  <p>
-                    <strong>Genre: {album.genre}</strong>
-                  </p>
-                  <p>
-                    <strong>Number of Songs: {album.numberOfSongs}</strong>
-                  </p>
-                </div>
-                <button id="EditButton" onClick={() => handleEdit(album)}>
-                  Edit
-                </button>
-                <button
-                  id="DeleteButton"
-                  onClick={() => handleDelete(album.id)}
-                  style={{ marginLeft: "10px" }}
-                >
-                  Delete
-                </button>
+      <ul className="list">
+        {albums.filter(filterAlbums).map((album) => (
+          <li key={album.id} className="item">
+            <div className="details">
+              <h2 className="name">{album.title}</h2>
+              <div className="info">
+                <p><strong>Artist:</strong> {album.artist?.name}</p>
+                <p><strong>Release Year:</strong> {album.releaseYear}</p>
+                <p><strong>Genre:</strong> {album.genre}</p>
+                <p><strong>Number of Songs:</strong> {album.numberOfSongs}</p>
               </div>
-            </li>
-          ))}
-        </ul>
-      )}
+              <div className="button-group">
+                <button id="EditButton" onClick={() => handleEdit(album)}>Edit</button>
+                <button id="DeleteButton" onClick={() => handleDelete(album.id)}>Delete</button>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
