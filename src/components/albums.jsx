@@ -17,7 +17,7 @@ function Albums() {
     releaseYear: "",
     artistId: "",
   });
-
+ // const databaseLink = "http://34.235.166.184:80";
   const databaseLink = "http://localhost:8080";
 
   useEffect(() => {
