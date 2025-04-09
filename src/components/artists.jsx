@@ -76,13 +76,21 @@ function Artists() {
 
     switch (filterOption) {
       case "Artist":
-        return artist.name.toLowerCase().includes(input.toLowerCase());
+        return (
+          artist.name && artist.name.toLowerCase().includes(input.toLowerCase())
+        );
       case "Debut Year":
         return artist.debutYear.toString().includes(input);
       case "Genre":
-        return artist.genre.toLowerCase().includes(input.toLowerCase());
+        return (
+          artist.genre &&
+          artist.genre.toLowerCase().includes(input.toLowerCase())
+        );
       case "Country":
-        return artist.country.toLowerCase().includes(input.toLowerCase());
+        return (
+          artist.country &&
+          artist.country.toLowerCase().includes(input.toLowerCase())
+        );
       default:
         return true;
     }
@@ -247,6 +255,7 @@ function Artists() {
                     <button
                       id="DeleteButton"
                       onClick={() => handleDelete(artist.id)}
+                      style={{ marginLeft: "10px" }}
                     >
                       Delete
                     </button>
