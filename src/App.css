@@ -1,5 +1,14 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 body {
-  background-color: burlywood;
+  background-color: rgb(252, 237, 237);
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
 Input {
@@ -23,6 +32,8 @@ select {
 
 button {
   border-radius: 10px;
+  padding: 10px;
+  width: 120px;
   display: block;
   margin: 10px auto;
 }
@@ -32,6 +43,12 @@ button:hover {
   background-color: #555;
   color: white;
   border-radius: 10px;
+}
+
+hr {
+  width: 100%;
+  border: 2px solid rgb(53, 50, 50);
+  margin: 20px 0;
 }
 
 .App {
@@ -76,11 +93,11 @@ button:hover {
 .list {
   text-align: center;
   list-style-type: none;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
   margin: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 10px;
   margin-top: 20px;
 }
@@ -116,8 +133,28 @@ button:hover {
   color: #222;
 }
 
+#footer {
+  background-color: #353232;
+  color: #eee;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 0.9rem;
+  bottom: 0;
+  width: 100%;
+}
+
+#AddEdit {
+  background-color: #79717194;
+  margin: 10px 10px 10px 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 10px;
+  border-top: 1px solid #000;
+}
+
 #EditButton {
   background-color: rgb(0, 190, 0);
+  width: 50px;
   border-radius: 10px;
   cursor: pointer;
 }
@@ -138,6 +175,7 @@ button:hover {
 
 #DeleteButton {
   background-color: red;
+  width: 80px;
   border-radius: 10px;
   cursor: pointer;
   padding: 6px 12px;
@@ -158,7 +196,6 @@ h1 {
   text-align: center;
   font-size: 2.5rem;
   color: #333;
-  margin-top: 20px;
   margin-bottom: 10px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -171,7 +208,7 @@ h2 {
   display: flex;
   justify-content: center;
   gap: 20px;
-  background-color: #deb887;
+  background-color: rgb(53, 50, 50);
   padding: 10px;
   margin-bottom: 30px;
   border-radius: 10px;
@@ -183,7 +220,7 @@ h2 {
 
 #NavBar a {
   text-decoration: none;
-  color: #000;
+  color: #fff;
   font-weight: bold;
   font-size: 1.2rem;
   padding: 8px 12px;
@@ -192,6 +229,14 @@ h2 {
 }
 
 #NavBar a:hover {
-  background-color: #a0522d;
+  color: rgb(227, 213, 213);
+}
+
+#MainBody {
+  background-color: rgb(53, 50, 50);
+  width: 100%;
+}
+
+#MainBody h1 {
   color: white;
 }
