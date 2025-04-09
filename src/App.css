@@ -17,17 +17,45 @@ Input {
   padding: 10px;
 }
 
-Select {
-  border-radius: 10px;
-  padding: 10px;
-  width: 350px;
-  margin-left: 10px;
+input,
+select {
+  display: block; /* Ensure elements are block-level for better spacing */
+  width: 100%; /* Allow inputs to take up full available space */
+  margin: 10px 0; /* Adjust spacing */
+}
+
+#SearchAddEditContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding-left: 20px;
+  width: 100%;
+}
+
+#Search,
+#AddEdit {
+  flex: 1;
+  box-sizing: border-box;
+  width: 100%; /* Ensure elements take up available space */
+  margin-left: 20px;
+}
+
+/* .addForm input {
+  margin: 10px 0 10px 0;
+} */
+
+select {
+  width: auto;
+}
+
+input {
+  width: auto;
 }
 
 input,
 select {
-  display: block;
-  margin: 10px auto;
+  display: inline-block;
+  margin: 10px 0;
 }
 
 button {
@@ -95,6 +123,7 @@ hr {
   list-style-type: none;
   padding-left: 20px;
   padding-right: 20px;
+  padding-bottom: 20px;
   margin: 0;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -141,15 +170,6 @@ hr {
   font-size: 0.9rem;
   bottom: 0;
   width: 100%;
-}
-
-#AddEdit {
-  background-color: #79717194;
-  margin: 10px 10px 10px 10px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  border-radius: 10px;
-  border-top: 1px solid #000;
 }
 
 #EditButton {

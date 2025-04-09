@@ -140,24 +140,89 @@ function Artists() {
     <div>
       <h1>Artists</h1>
 
-      <h2>Search by:</h2>
-      <select value={filterOption} onChange={handleFilterChange}>
-        <option value="">Select Filter</option>
-        <option value="Artist">Artist</option>
-        <option value="Debut Year">Debut Year</option>
-        <option value="Genre">Genre</option>
-        <option value="Country">Country</option>
-      </select>
+      <div className="SearchAddEditContainer">
+        <div id="Search">
+          <h2>Search by:</h2>
+          <select value={filterOption} onChange={handleFilterChange}>
+            <option value="">Select Filter</option>
+            <option value="Artist">Artist</option>
+            <option value="Debut Year">Debut Year</option>
+            <option value="Genre">Genre</option>
+            <option value="Country">Country</option>
+          </select>
+          <form onSubmit={handleSubmit}>
+            <input
+              id="InputTop"
+              type="text"
+              placeholder="Enter query"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+            />
+          </form>
+        </div>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          id="InputTop"
-          type="text"
-          placeholder="Enter query"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        />
-      </form>
+        <div id="AddEdit" ref={formRef}>
+          <h2>{newArtist.id === null ? "Add New Artist" : "Update Artist"}</h2>
+          {newArtist.id !== null && (
+            <button
+              onClick={() =>
+                setNewArtist({
+                  id: null,
+                  name: "",
+                  debutYear: "",
+                  genre: "",
+                  country: "",
+                })
+              }
+              style={{ marginBottom: "10px" }}
+            >
+              Cancel Edit
+            </button>
+          )}
+          <form onSubmit={handleSubmit} className="addForm">
+            <input
+              type="text"
+              placeholder="Artist"
+              value={newArtist.name}
+              onChange={(e) =>
+                setNewArtist({ ...newArtist, name: e.target.value })
+              }
+              required
+            />
+            <input
+              type="number"
+              placeholder="Debut Year"
+              value={newArtist.debutYear}
+              onChange={(e) =>
+                setNewArtist({ ...newArtist, debutYear: e.target.value })
+              }
+              required
+            />
+            <input
+              type="text"
+              placeholder="Genre"
+              value={newArtist.genre}
+              onChange={(e) =>
+                setNewArtist({ ...newArtist, genre: e.target.value })
+              }
+              required
+            />
+            <input
+              type="text"
+              placeholder="Country"
+              value={newArtist.country}
+              onChange={(e) =>
+                setNewArtist({ ...newArtist, country: e.target.value })
+              }
+              required
+            />
+
+            <button type="submit">
+              {newArtist.id === null ? "Add Artist" : "Update Artist"}
+            </button>
+          </form>
+        </div>
+      </div>
 
       <ul className="list">
         {artists.filter(filterArtists).map((artist) => (
@@ -192,67 +257,6 @@ function Artists() {
           </li>
         ))}
       </ul>
-      <div id="AddEdit" ref={formRef}>
-        <h2>{newArtist.id === null ? "Add New Artist" : "Update Artist"}</h2>
-        {newArtist.id !== null && (
-          <button
-            onClick={() =>
-              setNewArtist({
-                id: null,
-                name: "",
-                debutYear: "",
-                genre: "",
-                country: "",
-              })
-            }
-            style={{ marginBottom: "10px" }}
-          >
-            Cancel Edit
-          </button>
-        )}
-        <form onSubmit={handleSubmit} className="addForm">
-          <input
-            type="text"
-            placeholder="Artist"
-            value={newArtist.name}
-            onChange={(e) =>
-              setNewArtist({ ...newArtist, name: e.target.value })
-            }
-            required
-          />
-          <input
-            type="number"
-            placeholder="Debut Year"
-            value={newArtist.debutYear}
-            onChange={(e) =>
-              setNewArtist({ ...newArtist, debutYear: e.target.value })
-            }
-            required
-          />
-          <input
-            type="text"
-            placeholder="Genre"
-            value={newArtist.genre}
-            onChange={(e) =>
-              setNewArtist({ ...newArtist, genre: e.target.value })
-            }
-            required
-          />
-          <input
-            type="text"
-            placeholder="Country"
-            value={newArtist.country}
-            onChange={(e) =>
-              setNewArtist({ ...newArtist, country: e.target.value })
-            }
-            required
-          />
-
-          <button type="submit">
-            {newArtist.id === null ? "Add Artist" : "Update Artist"}
-          </button>
-        </form>
-      </div>
     </div>
   );
 }
