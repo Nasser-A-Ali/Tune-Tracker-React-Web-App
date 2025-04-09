@@ -16,8 +16,8 @@ function Albums() {
     releaseYear: "",
     artistId: "",
   });
- // const databaseLink = "http://34.235.166.184:80";
-  const databaseLink = "http://localhost:8080";
+  const databaseLink = process.env.REACT_APP_API_URL; // Chooses the API URL based on the environment (local or production - npm start or npm run build)
+
 
   useEffect(() => {
     axios
@@ -30,7 +30,7 @@ function Albums() {
         setError("Error fetching albums");
         setLoading(false);
       });
-  }, []);
+  }, [databaseLink]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

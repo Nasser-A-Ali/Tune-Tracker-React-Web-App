@@ -8,8 +8,8 @@ function Songs() {
   const [error, setError] = useState(null);
   const [input, setInput] = useState("");
   const [filterOption, setFilterOption] = useState("");
-   // const databaseLink = "http://34.235.166.184:80"
-  const databaseLink = "http://localhost:8080";
+  const databaseLink = process.env.REACT_APP_API_URL; // Chooses the API URL based on the environment (local or production - npm start or npm run build)
+
 
   const [newSong, setNewSong] = useState({
     id: null,
@@ -31,7 +31,7 @@ function Songs() {
         setError("Error fetching songs");
         setLoading(false);
       });
-  }, []);
+  }, [databaseLink]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

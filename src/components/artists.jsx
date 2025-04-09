@@ -9,8 +9,8 @@ function Artists() {
   const [input, setInput] = useState("");
   const [filterOption, setFilterOption] = useState("");
   const formRef = useRef(null);
-  // const databaseLink = "http://34.235.166.184:80";
-  const databaseLink = "http://localhost:8080";
+  const databaseLink = process.env.REACT_APP_API_URL; // Chooses the API URL based on the environment (local or production - npm start or npm run build)
+
 
   const [newArtist, setNewArtist] = useState({
     id: null,
@@ -31,7 +31,7 @@ function Artists() {
         setError("Error fetching artists");
         setLoading(false);
       });
-  }, []);
+  }, [databaseLink]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -124,6 +124,7 @@ function Artists() {
     if (confirmDelete) {
       try {
         await axios.delete(`${databaseLink}/artist/${artistId}`);
+
         const refreshed = await axios.get(`${databaseLink}/artists`);
         setArtists(refreshed.data);
       } catch (error) {
