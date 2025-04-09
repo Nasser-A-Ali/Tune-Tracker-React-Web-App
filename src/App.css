@@ -19,9 +19,9 @@ Input {
 
 input,
 select {
-  display: block; /* Ensure elements are block-level for better spacing */
-  width: 100%; /* Allow inputs to take up full available space */
-  margin: 10px 0; /* Adjust spacing */
+  display: block;
+  width: 100%;
+  margin: 10px 0;
 }
 
 #SearchAddEditContainer {
@@ -36,13 +36,9 @@ select {
 #AddEdit {
   flex: 1;
   box-sizing: border-box;
-  width: 100%; /* Ensure elements take up available space */
+  width: 100%;
   margin-left: 20px;
 }
-
-/* .addForm input {
-  margin: 10px 0 10px 0;
-} */
 
 select {
   width: auto;

@@ -136,26 +136,111 @@ function Albums() {
     <div>
       <h1>Albums</h1>
 
-      <h2>Search by: </h2>
+      <div className="SearchAddEditContainer">
+        <div id="Search">
+          <h2>Search by: </h2>
 
-      <select value={filterOption} onChange={handleFilterOption}>
-        <option value="">Select Filter</option>
-        <option value="Title">Title</option>
-        <option value="Artist">Artist</option>
-        <option value="Release Year">Release Year</option>
-        <option value="Genre">Genre</option>
-        <option value="Number of Songs">Number of Songs</option>
-        <option value="List of Songs">List of Songs</option>
-      </select>
+          <select value={filterOption} onChange={handleFilterOption}>
+            <option value="">Select Filter</option>
+            <option value="Title">Title</option>
+            <option value="Artist">Artist</option>
+            <option value="Release Year">Release Year</option>
+            <option value="Genre">Genre</option>
+            <option value="Number of Songs">Number of Songs</option>
+            <option value="List of Songs">List of Songs</option>
+          </select>
 
-      <form onSubmit={(e) => e.preventDefault()}>
-        <input
-          type="text"
-          placeholder="Enter Query..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        />
-      </form>
+          <form onSubmit={(e) => e.preventDefault()}>
+            <input
+              id="InputTop"
+              type="text"
+              placeholder="Enter Query..."
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+            />
+          </form>
+          <h2>{newAlbum.id === null ? "Add New Album" : "Update Album"}</h2>
+          {newAlbum.id !== null && (
+            <button
+              onClick={() =>
+                setNewAlbum({
+                  id: null,
+                  title: "",
+                  artistId: "",
+                  releaseYear: "",
+                  genre: "",
+                  numberOfSongs: "",
+                  listOfSongs: "",
+                })
+              }
+              style={{ marginBottom: "10px" }}
+            >
+              Cancel Edit
+            </button>
+          )}
+
+          <form onSubmit={handleSubmit} className="addForm">
+            <input
+              type="text"
+              placeholder="Title"
+              value={newAlbum.title}
+              onChange={(e) =>
+                setNewAlbum({ ...newAlbum, title: e.target.value })
+              }
+              required
+            />
+            <input
+              type="text"
+              placeholder="Genre"
+              value={newAlbum.genre}
+              onChange={(e) =>
+                setNewAlbum({ ...newAlbum, genre: e.target.value })
+              }
+              required
+            />
+            <input
+              type="number"
+              placeholder="Number of Songs"
+              value={newAlbum.numberOfSongs}
+              onChange={(e) =>
+                setNewAlbum({ ...newAlbum, numberOfSongs: e.target.value })
+              }
+              required
+            />
+            <input
+              type="text"
+              placeholder="List of Songs"
+              value={newAlbum.listOfSongs}
+              onChange={(e) =>
+                setNewAlbum({ ...newAlbum, listOfSongs: e.target.value })
+              }
+              required
+            />
+            <input
+              type="number"
+              placeholder="Release Year"
+              value={newAlbum.releaseYear}
+              onChange={(e) =>
+                setNewAlbum({ ...newAlbum, releaseYear: e.target.value })
+              }
+              required
+            />
+            <input
+              type="number"
+              placeholder="Artist ID"
+              value={newAlbum.artistId}
+              onChange={(e) =>
+                setNewAlbum({ ...newAlbum, artistId: e.target.value })
+              }
+              required
+            />
+
+            <button type="submit">
+              {newAlbum.id === null ? "Add Album" : "Update Album"}
+            </button>
+          </form>
+        </div>
+      </div>
 
       {albums.length === 0 ? (
         <div>No albums available</div>
@@ -179,8 +264,11 @@ function Albums() {
                     <strong>Number of Songs: {album.numberOfSongs}</strong>
                   </p>
                 </div>
-                <button onClick={() => handleEdit(album)}>Edit</button>
+                <button id="EditButton" onClick={() => handleEdit(album)}>
+                  Edit
+                </button>
                 <button
+                  id="DeleteButton"
                   onClick={() => handleDelete(album.id)}
                   style={{ marginLeft: "10px" }}
                 >
@@ -191,83 +279,6 @@ function Albums() {
           ))}
         </ul>
       )}
-
-      <h2>{newAlbum.id === null ? "Add New Album" : "Update Album"}</h2>
-      {newAlbum.id !== null && (
-        <button
-          onClick={() =>
-            setNewAlbum({
-              id: null,
-              title: "",
-              artistId: "",
-              releaseYear: "",
-              genre: "",
-              numberOfSongs: "",
-              listOfSongs: "",
-            })
-          }
-          style={{ marginBottom: "10px" }}
-        >
-          Cancel Edit
-        </button>
-      )}
-
-      <form onSubmit={handleSubmit} className="addForm">
-        <input
-          type="text"
-          placeholder="Title"
-          value={newAlbum.title}
-          onChange={(e) => setNewAlbum({ ...newAlbum, title: e.target.value })}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Genre"
-          value={newAlbum.genre}
-          onChange={(e) => setNewAlbum({ ...newAlbum, genre: e.target.value })}
-          required
-        />
-        <input
-          type="number"
-          placeholder="Number of Songs"
-          value={newAlbum.numberOfSongs}
-          onChange={(e) =>
-            setNewAlbum({ ...newAlbum, numberOfSongs: e.target.value })
-          }
-          required
-        />
-        <input
-          type="text"
-          placeholder="List of Songs"
-          value={newAlbum.listOfSongs}
-          onChange={(e) =>
-            setNewAlbum({ ...newAlbum, listOfSongs: e.target.value })
-          }
-          required
-        />
-        <input
-          type="number"
-          placeholder="Release Year"
-          value={newAlbum.releaseYear}
-          onChange={(e) =>
-            setNewAlbum({ ...newAlbum, releaseYear: e.target.value })
-          }
-          required
-        />
-        <input
-          type="number"
-          placeholder="Artist ID"
-          value={newAlbum.artistId}
-          onChange={(e) =>
-            setNewAlbum({ ...newAlbum, artistId: e.target.value })
-          }
-          required
-        />
-
-        <button type="submit">
-          {newAlbum.id === null ? "Add Album" : "Update Album"}
-        </button>
-      </form>
     </div>
   );
 }
