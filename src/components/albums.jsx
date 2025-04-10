@@ -135,7 +135,6 @@ function Albums() {
             <option value="Artist">Artist</option>
             <option value="Release Year">Release Year</option>
             <option value="Genre">Genre</option>
-            <option value="Number of Songs">Number of Songs</option>
           </select>
 
           <form onSubmit={(e) => e.preventDefault()}>
