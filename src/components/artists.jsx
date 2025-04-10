@@ -9,7 +9,7 @@ function Artists() {
   const [input, setInput] = useState("");
   const [filterOption, setFilterOption] = useState("");
   const formRef = useRef(null);
-  const databaseLink = process.env.REACT_APP_API_URL; // Chooses the API URL based on the environment (local or production - npm start or npm run build)
+  const databaseLink = process.env.REACT_APP_API_URL || "http://localhost:8080"; // Chooses the API URL based on the environment (local or production - npm start or npm run build)
 
 
   const [newArtist, setNewArtist] = useState({
