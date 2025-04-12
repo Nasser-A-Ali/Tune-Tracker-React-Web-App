@@ -12,13 +12,12 @@ function Albums() {
     id: null,
     title: "",
     genre: "",
-    numberOfSongs: "",
     listOfSongs: "",
     releaseYear: "",
     artistId: "",
   });
- // const databaseLink = "http://34.235.166.184:80";
-  const databaseLink = "http://localhost:8080";
+  const databaseLink = process.env.REACT_APP_API_URL || "http://localhost:8080"; // Chooses the API URL based on the environment (local or production - npm start or npm run build)
+
 
   useEffect(() => {
     axios
@@ -31,7 +30,7 @@ function Albums() {
         setError("Error fetching albums");
         setLoading(false);
       });
-  }, []);
+  }, [databaseLink]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,7 +44,6 @@ function Albums() {
         title: newAlbum.title,
         artist: { id: parseInt(newAlbum.artistId) },
         genre: newAlbum.genre,
-        numberOfSongs: parseInt(newAlbum.numberOfSongs),
         releaseYear: parseInt(newAlbum.releaseYear),
         listOfSongs: parsedListOfSongs,
       };
@@ -63,7 +61,6 @@ function Albums() {
         id: null,
         title: "",
         genre: "",
-        numberOfSongs: "",
         listOfSongs: "",
         releaseYear: "",
         artistId: "",
@@ -90,8 +87,6 @@ function Albums() {
         return album.releaseYear.toString().includes(input);
       case "Genre":
         return album.genre.toLowerCase().includes(input.toLowerCase());
-      case "Number of Songs":
-        return album.numberOfSongs.toString().includes(input);
       default:
         return true;
     }
@@ -106,7 +101,6 @@ function Albums() {
       artistId: album.artist?.id || "",
       releaseYear: album.releaseYear,
       genre: album.genre,
-      numberOfSongs: album.numberOfSongs,
       listOfSongs: songIds,
     });
   };
@@ -141,7 +135,6 @@ function Albums() {
             <option value="Artist">Artist</option>
             <option value="Release Year">Release Year</option>
             <option value="Genre">Genre</option>
-            <option value="Number of Songs">Number of Songs</option>
           </select>
 
           <form onSubmit={(e) => e.preventDefault()}>
@@ -164,7 +157,6 @@ function Albums() {
                   artistId: "",
                   releaseYear: "",
                   genre: "",
-                  numberOfSongs: "",
                   listOfSongs: "",
                 })
               }
@@ -187,13 +179,6 @@ function Albums() {
               placeholder="Genre"
               value={newAlbum.genre}
               onChange={(e) => setNewAlbum({ ...newAlbum, genre: e.target.value })}
-              required
-            />
-            <input
-              type="number"
-              placeholder="Number of Songs"
-              value={newAlbum.numberOfSongs}
-              onChange={(e) => setNewAlbum({ ...newAlbum, numberOfSongs: e.target.value })}
               required
             />
             <input
@@ -233,7 +218,6 @@ function Albums() {
                 <p><strong>Artist:</strong> {album.artist?.name}</p>
                 <p><strong>Release Year:</strong> {album.releaseYear}</p>
                 <p><strong>Genre:</strong> {album.genre}</p>
-                <p><strong>Number of Songs:</strong> {album.numberOfSongs}</p>
               </div>
               <div className="button-group">
                 <button id="EditButton" onClick={() => handleEdit(album)}>Edit</button>
