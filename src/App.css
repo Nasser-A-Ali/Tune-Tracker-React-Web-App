@@ -256,3 +256,9 @@ h2 {
 #MainBody h1 {
   color: white;
 }
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}

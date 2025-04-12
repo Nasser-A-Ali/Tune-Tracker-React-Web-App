@@ -9,9 +9,10 @@ function Artists() {
   const [input, setInput] = useState("");
   const [filterOption, setFilterOption] = useState("");
   const formRef = useRef(null);
-  const databaseLink = process.env.REACT_APP_API_URL || "http://localhost:8080"; // Chooses the API URL based on the environment (local or production - npm start or npm run build)
 
-
+  // Chooses the API URL based on the environment (local or production - npm start or npm run build)
+  const databaseLink = process.env.REACT_APP_API_URL || "http://localhost:8080"; 
+  
   const [newArtist, setNewArtist] = useState({
     id: null,
     name: "",
@@ -105,15 +106,15 @@ function Artists() {
       country: artist.country,
     });
 
-    setTimeout(() => {
-      const yOffset = -120;
-      const y =
-        formRef.current.getBoundingClientRect().top +
-        window.pageYOffset +
-        yOffset;
+    // setTimeout(() => {
+    //   const yOffset = -120;
+    //   const y =
+    //     formRef.current.getBoundingClientRect().top +
+    //     window.pageYOffset +
+    //     yOffset;
 
-      window.scrollTo({ top: y, behavior: "smooth" });
-    }, 100);
+    //   window.scrollTo({ top: y, behavior: "smooth" });
+    // }, 100);
   };
 
   const handleDelete = async (artistId) => {

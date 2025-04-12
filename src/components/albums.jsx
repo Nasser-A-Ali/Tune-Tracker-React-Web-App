@@ -8,6 +8,9 @@ function Albums() {
   const [input, setInput] = useState("");
   const [filterOption, setFilterOption] = useState("");
 
+  // Chooses the API URL based on the environment (local or production - npm start or npm run build)
+  const databaseLink = process.env.REACT_APP_API_URL || "http://localhost:8080"; 
+  
   const [newAlbum, setNewAlbum] = useState({
     id: null,
     title: "",
@@ -16,8 +19,6 @@ function Albums() {
     releaseYear: "",
     artistId: "",
   });
-  const databaseLink = process.env.REACT_APP_API_URL || "http://localhost:8080"; // Chooses the API URL based on the environment (local or production - npm start or npm run build)
-
 
   useEffect(() => {
     axios
@@ -218,6 +219,12 @@ function Albums() {
                 <p><strong>Artist:</strong> {album.artist?.name}</p>
                 <p><strong>Release Year:</strong> {album.releaseYear}</p>
                 <p><strong>Genre:</strong> {album.genre}</p>
+                <p><strong>Songs:</strong></p>
+                <ul>
+                  {album.listOfSongs?.map((song) => (
+                    <li key={song.id}>{song.title}</li>
+                  )) || <li>No songs available</li>}
+                </ul>
               </div>
               <div className="button-group">
                 <button id="EditButton" onClick={() => handleEdit(album)}>Edit</button>

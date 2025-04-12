@@ -8,9 +8,9 @@ function Songs() {
   const [error, setError] = useState(null);
   const [input, setInput] = useState("");
   const [filterOption, setFilterOption] = useState("");
-  const databaseLink = process.env.REACT_APP_API_URL || "http://localhost:8080"; // Chooses the API URL based on the environment (local or production - npm start or npm run build)
 
-
+  // Chooses the API URL based on the environment (local or production - npm start or npm run build)
+  const databaseLink = process.env.REACT_APP_API_URL || "http://localhost:8080"; 
   const [newSong, setNewSong] = useState({
     id: null,
     title: "",
@@ -223,11 +223,11 @@ function Songs() {
                   <strong>Duration:</strong> {song.duration} seconds
                 </p>
                 <p>
-                  <strong>Artist Name:</strong> {song.artist?.name || "Unknown"}
+                  <strong>Artist Name:</strong> {song.artist?.name || "Unknown"} (ID: {song.artist?.id || "Unknown"})
                 </p>
-                <p>
+                {/* <p>
                   <strong>Artist ID:</strong> {song.artist?.id || "Unknown"}
-                </p>
+                </p> */}
                 <div className="button-group">
                   <button id="EditButton" onClick={() => handleEdit(song)}>
                     Edit
