@@ -4,7 +4,7 @@
 }
 
 body {
-  background-color: rgb(252, 237, 237);
+  background-color: #fdfdfd;
   margin-top: 0px;
   margin-bottom: 0px;
   margin-left: 0px;
@@ -37,7 +37,7 @@ select {
   flex: 1;
   box-sizing: border-box;
   width: 100%;
-  margin-left: 20px;
+  padding-left: 20px;
 }
 
 select {
@@ -59,7 +59,7 @@ button {
   padding: 10px;
   width: 120px;
   display: block;
-  margin: 10px auto;
+  margin: 10px 0px;
 }
 
 button:hover {
@@ -128,12 +128,12 @@ hr {
 }
 
 .item {
-  background-color: #f9f9f9;
+  background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 10px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  border: 1px solid black;
+  border: 2px solid #ff7f50;
 }
 
 .item:hover {
@@ -159,8 +159,8 @@ hr {
 }
 
 #footer {
-  background-color: #353232;
-  color: #eee;
+  background-color: #ff7f50;
+  color: #fff;
   text-align: center;
   padding: 20px 0;
   font-size: 0.9rem;
@@ -169,14 +169,15 @@ hr {
 }
 
 #EditButton {
-  background-color: rgb(0, 190, 0);
-  width: 50px;
+  background-color: #ffa07a;
+  width: 80px;
   border-radius: 10px;
   cursor: pointer;
+  padding: 6px 12px;
 }
 
 #EditButton:hover {
-  background-color: rgb(0, 80, 0);
+  background-color: #ff6347;
   color: white;
   border-radius: 10px;
   cursor: pointer;
@@ -190,7 +191,7 @@ hr {
 }
 
 #DeleteButton {
-  background-color: red;
+  background-color: #ff4500;
   width: 80px;
   border-radius: 10px;
   cursor: pointer;
@@ -198,7 +199,7 @@ hr {
 }
 
 #DeleteButton:hover {
-  background-color: rgb(117, 0, 0);
+  background-color: #d73000;
   color: white;
   border-radius: 10px;
   cursor: pointer;
@@ -224,10 +225,10 @@ h2 {
   display: flex;
   justify-content: center;
   gap: 20px;
-  background-color: rgb(53, 50, 50);
+  background-color: #ff7f50;
   padding: 10px;
-  margin-bottom: 30px;
-  border-radius: 10px;
+  margin-bottom: 10px;
+  border-top: 1px white solid;
 }
 
 #NavBar li {
@@ -241,18 +242,78 @@ h2 {
   font-size: 1.2rem;
   padding: 8px 12px;
   border-radius: 8px;
-  transition: background-color 0.3s, color 0.3s;
+  position: relative;
+  transition: color 0.3s;
 }
 
-#NavBar a:hover {
-  color: rgb(227, 213, 213);
+#NavBar a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: #fff;
+  transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+#NavBar a:hover::after {
+  width: 100%;
+  left: 0;
 }
 
 #MainBody {
-  background-color: rgb(53, 50, 50);
+  background-color: #ff7f50;
   width: 100%;
 }
 
 #MainBody h1 {
   color: white;
+}
+
+ul {
+  list-style-type: "\1F3B6";
+  padding: 0;
+  padding-left: 40px;
+  margin: 0;
+  text-align: left;
+}
+
+.list-of-songs {
+  border: 2px solid #ff7f50;
+  background-color: #fffaf0;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+li {
+  padding-left: 8px;
+}
+
+#header {
+  color: white;
+  background-color: #ff7f50;
+}
+
+#header h1 {
+  color: white;
+  text-shadow: 2px 2px 4px #555;
+}
+
+.addForm {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.header-id {
+  color: #ff6347;
+  font-size: 0.5em;
+  vertical-align: middle;
+}
+
+.field-id {
+  color: #ff6347;
+  font-size: 0.8em;
+  vertical-align: middle;
 }

@@ -8,9 +8,9 @@ function Songs() {
   const [error, setError] = useState(null);
   const [input, setInput] = useState("");
   const [filterOption, setFilterOption] = useState("");
-  const databaseLink = process.env.REACT_APP_API_URL || "http://localhost:8080"; // Chooses the API URL based on the environment (local or production - npm start or npm run build)
 
-
+  // Chooses the API URL based on the environment (local or production - npm start or npm run build)
+  const databaseLink = process.env.REACT_APP_API_URL || "http://localhost:8080";
   const [newSong, setNewSong] = useState({
     id: null,
     title: "",
@@ -99,7 +99,9 @@ function Songs() {
   };
 
   const handleDelete = async (songId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this song?");
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this song?"
+    );
     if (confirmDelete) {
       try {
         await axios.delete(`${databaseLink}/song/${songId}`);
@@ -164,21 +166,27 @@ function Songs() {
               type="text"
               placeholder="Title"
               value={newSong.title}
-              onChange={(e) => setNewSong({ ...newSong, title: e.target.value })}
+              onChange={(e) =>
+                setNewSong({ ...newSong, title: e.target.value })
+              }
               required
             />
             <input
               type="text"
               placeholder="Genre"
               value={newSong.genre}
-              onChange={(e) => setNewSong({ ...newSong, genre: e.target.value })}
+              onChange={(e) =>
+                setNewSong({ ...newSong, genre: e.target.value })
+              }
               required
             />
             <input
               type="number"
               placeholder="Duration (seconds)"
               value={newSong.duration}
-              onChange={(e) => setNewSong({ ...newSong, duration: e.target.value })}
+              onChange={(e) =>
+                setNewSong({ ...newSong, duration: e.target.value })
+              }
               required
             />
             <input
@@ -211,7 +219,9 @@ function Songs() {
         {songs.filter(filterSongs).map((song) => (
           <li key={song.id} className="item">
             <div className="details">
-              <h2 className="name">{song.title}</h2>
+              <h2 className="name">
+                {song.title} <span className="header-id">#{song.id}</span>{" "}
+              </h2>
               <div className="info">
                 <p>
                   <strong>Release Year:</strong> {song.releaseYear}
@@ -223,16 +233,19 @@ function Songs() {
                   <strong>Duration:</strong> {song.duration} seconds
                 </p>
                 <p>
-                  <strong>Artist Name:</strong> {song.artist?.name || "Unknown"}
-                </p>
-                <p>
-                  <strong>Artist ID:</strong> {song.artist?.id || "Unknown"}
+                  <strong>Artist Name:</strong> {song.artist?.name || "Unknown"}{" "}
+                  <span className="field-id">
+                    #{song.artist?.id || "Unknown"}
+                  </span>
                 </p>
                 <div className="button-group">
                   <button id="EditButton" onClick={() => handleEdit(song)}>
                     Edit
                   </button>
-                  <button id="DeleteButton" onClick={() => handleDelete(song.id)}>
+                  <button
+                    id="DeleteButton"
+                    onClick={() => handleDelete(song.id)}
+                  >
                     Delete
                   </button>
                 </div>
