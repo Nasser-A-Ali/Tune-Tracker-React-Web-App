@@ -317,3 +317,33 @@ li {
   font-size: 0.8em;
   vertical-align: middle;
 }
+
+#welcome-container{
+  margin: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#welcome{
+  color: #ffffff;
+  text-shadow: 2px 2px 4px #7c7c7c;
+  background-color: #ff7f50;
+  border: 5px solid #ff6347;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.app-description{
+  color: #7c7c7c;
+  font-size: 16pt;
+  margin-top: 15px;
+  text-align: center;
+}
+
+#hint{
+  font-size: 14pt;
+  margin-top: 15px;
+ color: #a8a8a8;
+}
