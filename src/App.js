@@ -8,8 +8,8 @@ import Footer from "./components/footer";
 function App() {
   return (
     <div>
-      <div id="MainBody">
-        <h1>Tune Tracker</h1>
+      <div id="header">
+        <h1>🎧 Tune Tracker 🎧</h1>
         <ul id="NavBar">
           <li>
             <Link to="/artists">Artists</Link>

@@ -9,8 +9,8 @@ function Albums() {
   const [filterOption, setFilterOption] = useState("");
 
   // Chooses the API URL based on the environment (local or production - npm start or npm run build)
-  const databaseLink = process.env.REACT_APP_API_URL || "http://localhost:8080"; 
-  
+  const databaseLink = process.env.REACT_APP_API_URL || "http://localhost:8080";
+
   const [newAlbum, setNewAlbum] = useState({
     id: null,
     title: "",
@@ -107,7 +107,9 @@ function Albums() {
   };
 
   const handleDelete = async (albumId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this album?");
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this album?"
+    );
     if (confirmDelete) {
       try {
         await axios.delete(`${databaseLink}/album/${albumId}`);
@@ -172,35 +174,45 @@ function Albums() {
               type="text"
               placeholder="Title"
               value={newAlbum.title}
-              onChange={(e) => setNewAlbum({ ...newAlbum, title: e.target.value })}
+              onChange={(e) =>
+                setNewAlbum({ ...newAlbum, title: e.target.value })
+              }
               required
             />
             <input
               type="text"
               placeholder="Genre"
               value={newAlbum.genre}
-              onChange={(e) => setNewAlbum({ ...newAlbum, genre: e.target.value })}
+              onChange={(e) =>
+                setNewAlbum({ ...newAlbum, genre: e.target.value })
+              }
               required
             />
             <input
               type="text"
               placeholder="List of Song IDs (comma separated)"
               value={newAlbum.listOfSongs}
-              onChange={(e) => setNewAlbum({ ...newAlbum, listOfSongs: e.target.value })}
+              onChange={(e) =>
+                setNewAlbum({ ...newAlbum, listOfSongs: e.target.value })
+              }
               required
             />
             <input
               type="number"
               placeholder="Release Year"
               value={newAlbum.releaseYear}
-              onChange={(e) => setNewAlbum({ ...newAlbum, releaseYear: e.target.value })}
+              onChange={(e) =>
+                setNewAlbum({ ...newAlbum, releaseYear: e.target.value })
+              }
               required
             />
             <input
               type="number"
               placeholder="Artist ID"
               value={newAlbum.artistId}
-              onChange={(e) => setNewAlbum({ ...newAlbum, artistId: e.target.value })}
+              onChange={(e) =>
+                setNewAlbum({ ...newAlbum, artistId: e.target.value })
+              }
               required
             />
             <button type="submit">
@@ -214,21 +226,47 @@ function Albums() {
         {albums.filter(filterAlbums).map((album) => (
           <li key={album.id} className="item">
             <div className="details">
-              <h2 className="name">{album.title}</h2>
+              <h2 className="name">
+                {album.title}
+                <span className="header-id"> #{album.id}</span>
+              </h2>
               <div className="info">
-                <p><strong>Artist:</strong> {album.artist?.name}</p>
-                <p><strong>Release Year:</strong> {album.releaseYear}</p>
-                <p><strong>Genre:</strong> {album.genre}</p>
-                <p><strong>Songs:</strong></p>
-                <ul>
-                  {album.listOfSongs?.map((song) => (
-                    <li key={song.id}>{song.title}</li>
-                  )) || <li>No songs available</li>}
-                </ul>
+                <p>
+                  <strong>Artist:</strong> {album.artist?.name}{" "}
+                  <span className="field-id"> #{album.artist.id}</span>
+                </p>
+                <p>
+                  <strong>Release Year:</strong> {album.releaseYear}
+                </p>
+                <p>
+                  <strong>Genre:</strong> {album.genre}
+                </p>
+                <div className="list-of-songs">
+                  <p>
+                    <strong>Tracklist:</strong>
+                  </p>
+
+                  <ul>
+                    {album.listOfSongs?.map((song) => (
+                      <li key={song.id}>
+                        {" "}
+                        {song.title}{" "}
+                        <span className="field-id"> #{song.id}</span>
+                      </li>
+                    )) || <li>No songs available</li>}
+                  </ul>
+                </div>
               </div>
               <div className="button-group">
-                <button id="EditButton" onClick={() => handleEdit(album)}>Edit</button>
-                <button id="DeleteButton" onClick={() => handleDelete(album.id)}>Delete</button>
+                <button id="EditButton" onClick={() => handleEdit(album)}>
+                  Edit
+                </button>
+                <button
+                  id="DeleteButton"
+                  onClick={() => handleDelete(album.id)}
+                >
+                  Delete
+                </button>
               </div>
             </div>
           </li>

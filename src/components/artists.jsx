@@ -11,8 +11,8 @@ function Artists() {
   const formRef = useRef(null);
 
   // Chooses the API URL based on the environment (local or production - npm start or npm run build)
-  const databaseLink = process.env.REACT_APP_API_URL || "http://localhost:8080"; 
-  
+  const databaseLink = process.env.REACT_APP_API_URL || "http://localhost:8080";
+
   const [newArtist, setNewArtist] = useState({
     id: null,
     name: "",
@@ -235,7 +235,10 @@ function Artists() {
         {artists.filter(filterArtists).map((artist) => (
           <li key={artist.id} className="item">
             <div className="details">
-              <h2 className="name">{artist.name}</h2>
+              <h2 className="name">
+                {artist.name}
+                <span className="header-id"> #{artist.id}</span>
+              </h2>
               <div className="info">
                 <p>
                   <strong>Debut Year:</strong> {artist.debutYear}
