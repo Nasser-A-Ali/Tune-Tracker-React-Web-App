@@ -143,8 +143,10 @@ function Albums() {
 
       <div className="SearchAddEditContainer">
         <div id="Search">
-          <div id="SearchContents">
-            <h2>Search by:</h2>
+
+          <h2>Search by:</h2>
+          <div className="search-bar-content">
+
             <select value={filterOption} onChange={handleFilterOption}>
               <option value="">Select Filter</option>
               <option value="Title">Title</option>

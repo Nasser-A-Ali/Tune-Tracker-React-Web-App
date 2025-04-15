@@ -138,22 +138,24 @@ function Songs() {
       <div className="SearchAddEditContainer">
         <div id="Search">
           <h2>Search by:</h2>
-          <select value={filterOption} onChange={handleFilterChange}>
-            <option value="">Select Filter</option>
-            <option value="Title">Title</option>
-            <option value="Release Year">Release Year</option>
-            <option value="Genre">Genre</option>
-            <option value="Artist">Artist</option>
-          </select>
-          <form onSubmit={handleSubmit}>
-            <input
-              id="InputTop"
-              type="text"
-              placeholder="Enter query"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-            />
-          </form>
+          <div className="search-bar-content">
+            <select value={filterOption} onChange={handleFilterChange}>
+              <option value="">Select Filter</option>
+              <option value="Title">Title</option>
+              <option value="Release Year">Release Year</option>
+              <option value="Genre">Genre</option>
+              <option value="Artist">Artist</option>
+            </select>
+            <form onSubmit={handleSubmit}>
+              <input
+                id="InputTop"
+                type="text"
+                placeholder="Enter query"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+              />
+            </form>
+          </div>
         </div>
 
         <div id="AddEdit">
