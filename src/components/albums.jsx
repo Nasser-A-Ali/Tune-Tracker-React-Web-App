@@ -36,6 +36,17 @@ function Albums() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (
+        !newAlbum.title || !newAlbum.artistId || !newAlbum.genre || !newAlbum.releaseYear || !newAlbum.listOfSongs
+    ){
+      setError("Please fill all fields");
+
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
+      return;
+    }
+
     try {
       const parsedListOfSongs = newAlbum.listOfSongs
         .split(",")
@@ -123,32 +134,35 @@ function Albums() {
   };
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
 
   return (
     <div>
       <h1>Albums</h1>
 
+      {error && <div className="error-message">{error}</div>}
+
       <div className="SearchAddEditContainer">
         <div id="Search">
-          <h2>Search by:</h2>
-          <select value={filterOption} onChange={handleFilterOption}>
-            <option value="">Select Filter</option>
-            <option value="Title">Title</option>
-            <option value="Artist">Artist</option>
-            <option value="Release Year">Release Year</option>
-            <option value="Genre">Genre</option>
-          </select>
+          <div id="SearchContents">
+            <h2>Search by:</h2>
+            <select value={filterOption} onChange={handleFilterOption}>
+              <option value="">Select Filter</option>
+              <option value="Title">Title</option>
+              <option value="Artist">Artist</option>
+              <option value="Release Year">Release Year</option>
+              <option value="Genre">Genre</option>
+            </select>
 
-          <form onSubmit={(e) => e.preventDefault()}>
-            <input
-              id="InputTop"
-              type="text"
-              placeholder="Enter Query..."
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-            />
-          </form>
+            <form onSubmit={(e) => e.preventDefault()}>
+              <input
+                id="InputTop"
+                type="text"
+                placeholder="Enter Query..."
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+              />
+            </form>
+          </div>
 
           <h2>{newAlbum.id === null ? "Add New Album" : "Update Album"}</h2>
           {newAlbum.id !== null && (
