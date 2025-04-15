@@ -36,6 +36,17 @@ function Albums() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (
+        !newAlbum.title || !newAlbum.artistId || !newAlbum.genre || !newAlbum.releaseYear || !newAlbum.listOfSongs
+    ){
+      setError("Please fill all fields");
+
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
+      return;
+    }
+
     try {
       const parsedListOfSongs = newAlbum.listOfSongs
         .split(",")
@@ -123,16 +134,19 @@ function Albums() {
   };
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
 
   return (
     <div>
       <h1>Albums</h1>
 
+      {error && <div className="error-message">{error}</div>}
+
       <div className="SearchAddEditContainer">
         <div id="Search">
+
           <h2>Search by:</h2>
           <div className="search-bar-content">
+
             <select value={filterOption} onChange={handleFilterOption}>
               <option value="">Select Filter</option>
               <option value="Title">Title</option>

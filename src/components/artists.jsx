@@ -37,6 +37,17 @@ function Artists() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (
+        !newArtist.name || !newArtist.debutYear || !newArtist.genre || !newArtist.country
+    ){
+      setError("Please fill all fields");
+
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
+      return;
+    }
+
     try {
       const artistData = {
         name: newArtist.name,
@@ -139,13 +150,12 @@ function Artists() {
     return <div>Loading...</div>;
   }
 
-  if (error) {
-    return <div>{error}</div>;
-  }
 
   return (
     <div>
       <h1>Artists</h1>
+
+      {error && <div className="error-message">{error}</div>}
 
       <div className="SearchAddEditContainer">
         <div id="Search">

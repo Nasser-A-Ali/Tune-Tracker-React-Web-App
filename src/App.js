@@ -27,6 +27,22 @@ function App() {
           </li>
         </ul>
       </div>
+        <div id="welcome-container">
+            <h2 id="welcome">
+                Welcome to Tune Tracker, where you can <em>add, update</em> and <em>delete</em>- <em>songs, albums</em> and <em>artists!</em>
+            </h2>
+            <p className="app-description">
+                To get started, choose 1 of the 3 options in the navigation bar- Artists, Albums or Songs!
+            </p>
+            <p className="app-description">
+                On each page, you can view and update existing entries, delete them, or add your own to achieve your
+                personally curated music library!
+            </p>
+            <p id="hint">
+                <em>hint: </em> to add a <em>song,</em> you need to have an existing <em>artist.</em> and to add an <em>album,</em> you need to have
+                an existing <em>artist,</em> and one or more existing <em>songs.</em>
+            </p>
+        </div>
 
       <Routes>
         <Route path="/" element={<Home />} />
