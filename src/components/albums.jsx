@@ -1,16 +1,26 @@
+// albums.jsx
+// Albums component for the Tune Tracker React Web App
+// Handles displaying, adding, editing, and deleting albums
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+/**
+ * Albums component
+ * Manages the list of albums, including CRUD operations and filtering.
+ */
 function Albums() {
+  // State for album data, loading, error, and form input
   const [albums, setAlbums] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [input, setInput] = useState("");
   const [filterOption, setFilterOption] = useState("");
 
-  // Chooses the API URL based on the environment (local or production - npm start or npm run build)
+  // Chooses the API URL based on the environment (local or production)
   const databaseLink = process.env.REACT_APP_API_URL || "http://localhost:8080";
 
+  // State for the album form (add/edit)
   const [newAlbum, setNewAlbum] = useState({
     id: null,
     title: "",
@@ -20,6 +30,7 @@ function Albums() {
     artistId: "",
   });
 
+  // Fetch albums on mount
   useEffect(() => {
     axios
       .get(`${databaseLink}/albums`)
@@ -33,14 +44,17 @@ function Albums() {
       });
   }, [databaseLink]);
 
+  /**
+   * Handles form submission for adding or updating an album
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validate all fields are filled
     if (
         !newAlbum.title || !newAlbum.artistId || !newAlbum.genre || !newAlbum.releaseYear || !newAlbum.listOfSongs
     ){
       setError("Please fill all fields");
-
       setTimeout(() => {
         setError(null);
       }, 5000);
@@ -48,6 +62,7 @@ function Albums() {
     }
 
     try {
+      // Parse song IDs from comma-separated string
       const parsedListOfSongs = newAlbum.listOfSongs
         .split(",")
         .map((id) => ({ id: parseInt(id.trim()) }));
@@ -61,14 +76,18 @@ function Albums() {
       };
 
       if (newAlbum.id === null) {
+        // Add new album
         await axios.post(`${databaseLink}/album`, albumData);
       } else {
+        // Update existing album
         await axios.put(`${databaseLink}/album/${newAlbum.id}`, albumData);
       }
 
+      // Refresh album list
       const refreshed = await axios.get(`${databaseLink}/albums`);
       setAlbums(refreshed.data);
 
+      // Reset form
       setNewAlbum({
         id: null,
         title: "",
@@ -83,10 +102,16 @@ function Albums() {
     }
   };
 
+  /**
+   * Handles filter option change
+   */
   const handleFilterOption = (e) => {
     setFilterOption(e.target.value);
   };
 
+  /**
+   * Returns true if the album matches the current filter
+   */
   const filterAlbums = (album) => {
     if (!input) return true;
 
@@ -104,6 +129,9 @@ function Albums() {
     }
   };
 
+  /**
+   * Populates the form for editing an album
+   */
   const handleEdit = (album) => {
     const songIds = album.listOfSongs?.map((s) => s.id).join(",") || "";
 
@@ -117,6 +145,9 @@ function Albums() {
     });
   };
 
+  /**
+   * Deletes an album by ID after confirmation
+   */
   const handleDelete = async (albumId) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this album?"
@@ -124,6 +155,7 @@ function Albums() {
     if (confirmDelete) {
       try {
         await axios.delete(`${databaseLink}/album/${albumId}`);
+        // Refresh album list
         const refreshed = await axios.get(`${databaseLink}/albums`);
         setAlbums(refreshed.data);
       } catch (error) {
@@ -139,11 +171,13 @@ function Albums() {
     <div>
       <h1>Albums</h1>
 
+      {/* Display error messages */}
       {error && <div className="error-message">{error}</div>}
 
       <div className="SearchAddEditContainer">
         <div id="Search">
 
+          {/* Search/filter section */}
           <h2>Search by:</h2>
           <div className="search-bar-content">
 
@@ -185,6 +219,7 @@ function Albums() {
             </button>
           )}
 
+          {/* Add/Edit album form */}
           <form onSubmit={handleSubmit} className="addForm">
             <input
               type="text"
@@ -238,6 +273,7 @@ function Albums() {
         </div>
       </div>
 
+      {/* List of albums */}
       <ul className="list">
         {albums.filter(filterAlbums).map((album) => (
           <li key={album.id} className="item">
@@ -248,7 +284,7 @@ function Albums() {
               </h2>
               <div className="info">
                 <p>
-                  <strong>Artist:</strong> {album.artist?.name}{" "}
+                  <strong>Artist:</strong> {album.artist?.name} {" "}
                   <span className="field-id"> #{album.artist.id}</span>
                 </p>
                 <p>
@@ -266,7 +302,7 @@ function Albums() {
                     {album.listOfSongs?.map((song) => (
                       <li key={song.id}>
                         {" "}
-                        {song.title}{" "}
+                        {song.title} {" "}
                         <span className="field-id"> #{song.id}</span>
                       </li>
                     )) || <li>No songs available</li>}

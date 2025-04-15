@@ -1,8 +1,17 @@
+// artists.jsx
+// Artists component for the Tune Tracker React Web App
+// Handles displaying, adding, editing, and deleting artist profiles
+
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "../App.css";
 
+/**
+ * Artists component
+ * Manages the list of artists, including CRUD operations and filtering.
+ */
 function Artists() {
+  // State for artist data, loading, error, and form input
   const [artists, setArtists] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -10,9 +19,10 @@ function Artists() {
   const [filterOption, setFilterOption] = useState("");
   const formRef = useRef(null);
 
-  // Chooses the API URL based on the environment (local or production - npm start or npm run build)
+  // Chooses the API URL based on the environment (local or production)
   const databaseLink = process.env.REACT_APP_API_URL || "http://localhost:8080";
 
+  // State for the artist form (add/edit)
   const [newArtist, setNewArtist] = useState({
     id: null,
     name: "",
@@ -21,6 +31,7 @@ function Artists() {
     country: "",
   });
 
+  // Fetch artists on mount
   useEffect(() => {
     axios
       .get(`${databaseLink}/artists`)
@@ -34,14 +45,17 @@ function Artists() {
       });
   }, [databaseLink]);
 
+  /**
+   * Handles form submission for adding or updating an artist
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validate all fields are filled
     if (
         !newArtist.name || !newArtist.debutYear || !newArtist.genre || !newArtist.country
     ){
       setError("Please fill all fields");
-
       setTimeout(() => {
         setError(null);
       }, 5000);
@@ -57,14 +71,18 @@ function Artists() {
       };
 
       if (newArtist.id === null) {
+        // Add new artist
         await axios.post(`${databaseLink}/artist`, artistData);
       } else {
+        // Update existing artist
         await axios.put(`${databaseLink}/artist/${newArtist.id}`, artistData);
       }
 
+      // Refresh artist list
       const refreshed = await axios.get(`${databaseLink}/artists`);
       setArtists(refreshed.data);
 
+      // Reset form
       setNewArtist({
         id: null,
         name: "",
@@ -78,10 +96,16 @@ function Artists() {
     }
   };
 
+  /**
+   * Handles filter option change
+   */
   const handleFilterChange = (e) => {
     setFilterOption(e.target.value);
   };
 
+  /**
+   * Returns true if the artist matches the current filter
+   */
   const filterArtists = (artist) => {
     if (!input) return true;
 
@@ -107,8 +131,10 @@ function Artists() {
     }
   };
 
+  /**
+   * Populates the form for editing an artist
+   */
   const handleEdit = (artist) => {
-    console.log("Editing artist:", artist);
     setNewArtist({
       id: artist.id,
       name: artist.name,
@@ -116,18 +142,11 @@ function Artists() {
       genre: artist.genre,
       country: artist.country,
     });
-
-    // setTimeout(() => {
-    //   const yOffset = -120;
-    //   const y =
-    //     formRef.current.getBoundingClientRect().top +
-    //     window.pageYOffset +
-    //     yOffset;
-
-    //   window.scrollTo({ top: y, behavior: "smooth" });
-    // }, 100);
   };
 
+  /**
+   * Deletes an artist by ID after confirmation
+   */
   const handleDelete = async (artistId) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this artist?"
@@ -136,7 +155,7 @@ function Artists() {
     if (confirmDelete) {
       try {
         await axios.delete(`${databaseLink}/artist/${artistId}`);
-
+        // Refresh artist list
         const refreshed = await axios.get(`${databaseLink}/artists`);
         setArtists(refreshed.data);
       } catch (error) {
@@ -150,14 +169,15 @@ function Artists() {
     return <div>Loading...</div>;
   }
 
-
   return (
     <div>
       <h1>Artists</h1>
 
+      {/* Display error messages */}
       {error && <div className="error-message">{error}</div>}
 
       <div className="SearchAddEditContainer">
+        {/* Search/filter section */}
         <div id="Search">
           <h2>Search by:</h2>
           <div className="search-bar-content">
@@ -180,6 +200,7 @@ function Artists() {
           </div>
         </div>
 
+        {/* Add/Edit artist form */}
         <div id="AddEdit" ref={formRef}>
           <h2>{newArtist.id === null ? "Add New Artist" : "Update Artist"}</h2>
           {newArtist.id !== null && (
@@ -243,6 +264,7 @@ function Artists() {
         </div>
       </div>
 
+      {/* List of artists */}
       <ul className="list">
         {artists.filter(filterArtists).map((artist) => (
           <li key={artist.id} className="item">
@@ -259,9 +281,7 @@ function Artists() {
                   <strong>Genre:</strong> {artist.genre}
                 </p>
                 <p>
-                  <p>
-                    <strong>Country:</strong> {artist.country}
-                  </p>
+                  <strong>Country:</strong> {artist.country}
                   <div className="button-group">
                     <button id="EditButton" onClick={() => handleEdit(artist)}>
                       Edit

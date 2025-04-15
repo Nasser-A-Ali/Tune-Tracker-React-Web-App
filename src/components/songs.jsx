@@ -1,16 +1,26 @@
+// songs.jsx
+// Songs component for the Tune Tracker React Web App
+// Handles displaying, adding, editing, and deleting songs
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../App.css";
 
+/**
+ * Songs component
+ * Manages the list of songs, including CRUD operations and filtering.
+ */
 function Songs() {
+  // State for song data, loading, error, and form input
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [input, setInput] = useState("");
   const [filterOption, setFilterOption] = useState("");
 
-  // Chooses the API URL based on the environment (local or production - npm start or npm run build)
+  // Chooses the API URL based on the environment (local or production)
   const databaseLink = process.env.REACT_APP_API_URL || "http://localhost:8080";
+  // State for the song form (add/edit)
   const [newSong, setNewSong] = useState({
     id: null,
     title: "",
@@ -20,6 +30,7 @@ function Songs() {
     artistId: "",
   });
 
+  // Fetch songs on mount
   useEffect(() => {
     axios
       .get(`${databaseLink}/songs`)
@@ -33,20 +44,22 @@ function Songs() {
       });
   }, [databaseLink]);
 
+  /**
+   * Handles form submission for adding or updating a song
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validate all fields are filled
     if (
         !newSong.title || !newSong.genre || !newSong.duration || !newSong.releaseYear || !newSong.artistId
     ){
       setError("Please fill all fields");
-
       setTimeout(() => {
         setError(null);
       }, 5000);
       return;
     }
-
 
     try {
       const songData = {
@@ -58,14 +71,18 @@ function Songs() {
       };
 
       if (newSong.id === null) {
+        // Add new song
         await axios.post(`${databaseLink}/song`, songData);
       } else {
+        // Update existing song
         await axios.put(`${databaseLink}/song/${newSong.id}`, songData);
       }
 
+      // Refresh song list
       const refreshed = await axios.get(`${databaseLink}/songs`);
       setSongs(refreshed.data);
 
+      // Reset form
       setNewSong({
         id: null,
         title: "",
@@ -80,10 +97,16 @@ function Songs() {
     }
   };
 
+  /**
+   * Handles filter option change
+   */
   const handleFilterChange = (e) => {
     setFilterOption(e.target.value);
   };
 
+  /**
+   * Returns true if the song matches the current filter
+   */
   const filterSongs = (song) => {
     if (!input) return true;
     switch (filterOption) {
@@ -100,6 +123,9 @@ function Songs() {
     }
   };
 
+  /**
+   * Populates the form for editing a song
+   */
   const handleEdit = (song) => {
     setNewSong({
       id: song.id,
@@ -111,6 +137,9 @@ function Songs() {
     });
   };
 
+  /**
+   * Deletes a song by ID after confirmation
+   */
   const handleDelete = async (songId) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this song?"
@@ -118,6 +147,7 @@ function Songs() {
     if (confirmDelete) {
       try {
         await axios.delete(`${databaseLink}/song/${songId}`);
+        // Refresh song list
         const refreshed = await axios.get(`${databaseLink}/songs`);
         setSongs(refreshed.data);
       } catch (error) {
@@ -133,9 +163,11 @@ function Songs() {
     <div>
       <h1>Songs</h1>
 
+      {/* Display error messages */}
       {error && <div className="error-message">{error}</div>}
 
       <div className="SearchAddEditContainer">
+        {/* Search/filter section */}
         <div id="Search">
           <h2>Search by:</h2>
           <div className="search-bar-content">
@@ -158,6 +190,7 @@ function Songs() {
           </div>
         </div>
 
+        {/* Add/Edit song form */}
         <div id="AddEdit">
           <h2>{newSong.id === null ? "Add New Song" : "Update Song"}</h2>
           {newSong.id !== null && (
@@ -231,6 +264,7 @@ function Songs() {
         </div>
       </div>
 
+      {/* List of songs */}
       <ul className="list">
         {songs.filter(filterSongs).map((song) => (
           <li key={song.id} className="item">
