@@ -1,70 +1,241 @@
-# Getting Started with Create React App
+# Tune Tracker React Web App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern React web application for managing your music library. Tune Tracker allows you to organize your favorite songs, albums, and artists in one place.
 
-## Available Scripts
+![Tune Tracker Screenshot](screenshot.png)
 
-In the project directory, you can run:
+## Table of Contents
 
-### `npm start`
+- [Overview](#overview)
+- [Features](#features)
+- [System Architecture](#system-architecture)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+  - [Local Development](#local-development)
+  - [Production Build](#production-build)
+  - [Page Usage](#page-usage)
+    - [Artists](#artists)
+    - [Songs](#songs)
+    - [Albums](#albums)
+- [Development](#development)
+- [Contributing](#contributing)
+- [License](#license)
+- [Authors](#authors)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Overview
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Tune Tracker is a full-stack web application that helps music enthusiasts organize and manage their music library. The application consists of two main components:
 
-### `npm test`
+1. **Frontend**: A React-based web application (this repository)
+2. **Backend**: A Spring Boot API server (see [Tune Tracker API](https://github.com/yourusername/Tune-Tracker-API))
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Features
 
-### `npm run build`
+- **Song Management**: Add, edit, and delete songs with details like title, artist, album, and release date
+- **Artist Management**: Create and manage artist profiles with name, bio, and genre information
+- **Album Management**: Organize your albums with title, artist, release date, and genre
+- **Responsive Design**: Works seamlessly on desktop devices
+- **Modern UI**: Clean and intuitive interface with a focus on user experience
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## System Architecture
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Tune Tracker follows a client-server architecture:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **Frontend**: React.js application that provides the user interface
+- **Backend**: Spring Boot REST API that handles data persistence and business logic
+- **Database**: MySQL database for storing application data
 
-### `npm run eject`
+### Backend Options
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+You have two options for setting up the backend:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### Option 1: Run the Tune Tracker API locally
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. Clone the Tune Tracker API repository:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+   ```
+   git clone https://github.com/yourusername/Tune-Tracker-API.git
+   ```
 
-## Learn More
+2. Follow the setup instructions in the [Tune Tracker API README](https://github.com/yourusername/Tune-Tracker-API/blob/main/README.md)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+3. Make sure the backend server is running before starting the frontend application
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### Option 2: Use the hosted API
 
-### Code Splitting
+If you prefer not to run the backend locally, you can use the hosted API:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+1. Update the API base URL in the frontend configuration to point to the hosted API
 
-### Analyzing the Bundle Size
+## Prerequisites
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Before you begin, ensure you have the following installed:
 
-### Making a Progressive Web App
+- **Node.js** (v14 or higher)
+- **npm** or **yarn**
+- **Backend server** (either local or hosted)
+- **Git** (for cloning repositories)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Installation
 
-### Advanced Configuration
+1. Clone the repository:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+   ```
+   git clone https://github.com/yourusername/Tune-Tracker-React-Web-App.git
+   ```
 
-### Deployment
+2. Navigate to the project directory:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+   ```
+   cd Tune-Tracker-React-Web-App
+   ```
 
-### `npm run build` fails to minify
+3. Install dependencies:
+   ```
+   npm install
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Configuration
+
+Before running the application, you need to configure the API endpoint:
+
+1. Open `.env.production` (or create new similar configuration file)
+2. Update the `API_BASE_URL` to point to your backend server:
+   - For local development: `http://localhost:8080/`
+   - For hosted API: `http://<hosted-api-url>:80` - where <hosted-api-url> is your API endpoint.
+
+## Usage
+
+### Local Development
+
+To run the application in development mode:
+
+```
+npm start
+```
+
+This will start the development server and open the application in your default browser at http://localhost:3000. Any changes you make to the code will automatically reload the page.
+
+### Production Build
+
+To create and test a production build:
+
+1. Build the application:
+
+   ```
+   npm run build
+   ```
+
+   This creates an optimized production build in the `build` folder.
+
+2. Install a static server (if not already installed):
+
+   ```
+   npm install -g serve
+   ```
+
+3. Serve the production build:
+
+   ```
+   serve -s build
+   ```
+
+4. Open your browser and visit the URL shown in the terminal (typically http://localhost:3000)
+
+### Page Usage
+
+Due to the relationships implemented in the backend API, songs, artists, and albums must be added in a certain order:
+
+- Artists have no relationship to other entities, thus can be simply added without errors.
+- A song must have an artist, otherwise it isn't a valid song (add artist first).
+- An album must have an artist and a list of valid songs (add artist and songs first).
+
+#### Artists
+
+**Add (POST):**
+
+1. Navigate to the Artists section
+2. Fill in the artist details (name, bio, genre, etc.)
+3. Click the "Add Artist" button to add an artist
+4. If valid, the artist will be stored in the database and shown on the page
+
+**Edit (PUT):**
+
+1. Click the "Edit" button below the respective artist to edit it
+2. Fill in the fields and choose "Update Artist" or "Cancel edit"
+
+**Delete (DELETE):**
+
+1. Click the "Delete" button below the respective artist
+2. Confirm deletion when prompted
+
+#### Songs
+
+**Add (POST):**
+
+1. Navigate to the Songs section
+2. Fill in the song details (title, genre, etc.)
+3. Click the "Add Song" button to add a song
+4. If valid, the song will be stored in the database and shown on the page
+
+**Edit (PUT):**
+
+1. Click the "Edit" button below the respective song to edit it
+2. Fill in the fields and choose "Update Song" or "Cancel edit"
+
+**Delete (DELETE):**
+
+1. Click the "Delete" button below the respective song
+2. Confirm deletion when prompted
+
+#### Albums
+
+**Add (POST):**
+
+1. Navigate to the Albums section
+2. Fill in the album details (title, artist, release date, genre, etc.)
+3. Click the "Add Album" button to add an album
+4. If valid, the album will be stored in the database and shown on the page
+
+**Edit (PUT):**
+
+1. Click the "Edit" button below the respective album to edit it
+2. Fill in the fields and choose "Update Album" or "Cancel edit"
+
+**Delete (DELETE):**
+
+1. Click the "Delete" button below the respective album
+2. Confirm deletion when prompted
+
+## Development
+
+To run the application in development mode:
+
+```
+npm start
+```
+
+This will start the development server and open the application in your default browser at http://localhost:3000. Any changes you make to the code will automatically reload the page.
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is provided for personal use only. Redistribution, modification, or commercial use in any form is strictly prohibited without prior written permission from the author.
+For detailed license terms, refer to the [LICENSE](./LICENSE.md) file.
+
+## Authors
+
+- **[Adam-S988](https://github.com/Adam-S988)**
+- **[BJamesShea](https://github.com/BJamesShea)**
+- **[Nasser-A-Ali](https://github.com/Nasser-A-Ali)**
+- **[sarwoodford](https://github.com/sarwoodford)**
+- **[SearchingSteve](https://github.com/SearchingSteve)**
