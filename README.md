@@ -2,7 +2,7 @@
 
 A modern React web application for managing your music library. Tune Tracker allows you to organize your favorite songs, albums, and artists in one place.
 
-![Tune Tracker Screenshot](screenshot.png)
+![Tune Tracker Screenshot](tune-tracker-screenshot.png)
 
 ## Table of Contents
 
